@@ -7,6 +7,8 @@ const expressionDisplay = document.getElementById("expression");
 
 function updateScreen(value) {
 
+    if (showingFraction) return;
+
     screen.innerHTML = value;
 
 }
@@ -52,6 +54,7 @@ let lastAnswer = 0;
 
 let justCalculated = false;
 let waitingForNewNumber = false;
+let showingFraction = false;
 
 /* =========================
    HISTORY
@@ -477,6 +480,7 @@ function renderFraction(fraction) {
 numberButtons.forEach(button => {
 
     button.addEventListener("click", () => {
+        showingFraction = false;
 
         if (waitingForNewNumber) {
 
@@ -1068,7 +1072,9 @@ scientificButtons.forEach(button => {
 
             case "a/b":
 
-    screen.innerHTML = `
+                showingFraction = true;
+
+                screen.innerHTML = `
 
         <div class="fraction">
 
@@ -1084,7 +1090,7 @@ scientificButtons.forEach(button => {
 
     `;
 
-    break;
+                break;
 
             case "(":
 
