@@ -245,6 +245,82 @@ function fromRadians(value) {
 }
 
 /* =========================
+   SCIENTIFIC FUNCTIONS
+========================= */
+
+function sin(value) {
+
+    return Math.sin(
+        toRadians(value)
+    );
+
+}
+
+function cos(value) {
+
+    return Math.cos(
+        toRadians(value)
+    );
+
+}
+
+function tan(value) {
+
+    return Math.tan(
+        toRadians(value)
+    );
+
+}
+
+function asin(value) {
+
+    return fromRadians(
+        Math.asin(value)
+    );
+
+}
+
+function acos(value) {
+
+    return fromRadians(
+        Math.acos(value)
+    );
+
+}
+
+function atan(value) {
+
+    return fromRadians(
+        Math.atan(value)
+    );
+
+}
+
+function log(value) {
+
+    return Math.log10(value);
+
+}
+
+function ln(value) {
+
+    return Math.log(value);
+
+}
+
+function sqrt(value) {
+
+    return Math.sqrt(value);
+
+}
+
+function abs(value) {
+
+    return Math.abs(value);
+
+}
+
+/* =========================
    FORMAT EXPRESSION
 ========================= */
 
@@ -268,44 +344,13 @@ function formatExpression(expression) {
 
     return expression
 
-        .replace(/sin\(/g,
-            "Math.sin(toRadians(")
+        .replace(/√/g, "sqrt")
 
-        .replace(/cos\(/g,
-            "Math.cos(toRadians(")
+        .replace(/π/g, "Math.PI")
 
-        .replace(/tan\(/g,
-            "Math.tan(toRadians(")
+        .replace(/\be\b/g, "Math.E")
 
-        .replace(/asin\(/g,
-            "fromRadians(Math.asin(")
-
-        .replace(/acos\(/g,
-            "fromRadians(Math.acos(")
-
-        .replace(/atan\(/g,
-            "fromRadians(Math.atan(")
-
-        .replace(/log\(/g,
-            "Math.log10(")
-
-        .replace(/ln\(/g,
-            "Math.log(")
-
-        .replace(/√\(/g,
-            "Math.sqrt(")
-
-        .replace(/abs\(/g,
-            "Math.abs(")
-
-        .replace(/π/g,
-            "Math.PI")
-
-        .replace(/\be\b/g,
-            "Math.E")
-
-        .replace(/\^/g,
-            "**");
+        .replace(/\^/g, "**");
 
 }
 
