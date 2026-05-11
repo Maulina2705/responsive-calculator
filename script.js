@@ -37,12 +37,21 @@ const equalButton = document.querySelector(".equal");
 const scientificButtons = document.querySelectorAll(".scientific");
 
 /* =========================
+   ANGLE MODE
+========================= */
+
+const degBtn = document.getElementById("degBtn");
+const radBtn = document.getElementById("radBtn");
+
+let angleMode = "DEG";
+
+/* =========================
    LOAD SAVED THEME
 ========================= */
 
 const savedTheme = localStorage.getItem("theme");
 
-if(savedTheme === "light"){
+if (savedTheme === "light") {
 
     body.classList.add("light-mode");
 
@@ -60,13 +69,13 @@ themeToggle.addEventListener("click", () => {
 
     /* SAVE THEME */
 
-    if(body.classList.contains("light-mode")){
+    if (body.classList.contains("light-mode")) {
 
         themeToggle.textContent = "☀️";
 
         localStorage.setItem("theme", "light");
 
-    }else{
+    } else {
 
         themeToggle.textContent = "🌙";
 
@@ -107,6 +116,28 @@ standardBtn.addEventListener("click", () => {
 });
 
 /* =========================
+   ANGLE MODE SWITCH
+========================= */
+
+degBtn.addEventListener("click", () => {
+
+    angleMode = "DEG";
+
+    degBtn.classList.add("angle-active");
+    radBtn.classList.remove("angle-active");
+
+});
+
+radBtn.addEventListener("click", () => {
+
+    angleMode = "RAD";
+
+    radBtn.classList.add("angle-active");
+    degBtn.classList.remove("angle-active");
+
+});
+
+/* =========================
    NUMBER BUTTONS
 ========================= */
 
@@ -130,13 +161,13 @@ operatorButtons.forEach(button => {
 
         const lastChar = screen.value.slice(-1);
 
-        if(
+        if (
             lastChar === "+" ||
             lastChar === "-" ||
             lastChar === "*" ||
             lastChar === "/" ||
             lastChar === "%"
-        ){
+        ) {
             return;
         }
 
@@ -170,7 +201,7 @@ backspaceButton.addEventListener("click", () => {
    HISTORY FUNCTIONS
 ========================= */
 
-function saveHistory(){
+function saveHistory() {
 
     const items = [];
 
@@ -187,13 +218,13 @@ function saveHistory(){
 
 }
 
-function loadHistory(){
+function loadHistory() {
 
     const savedHistory = JSON.parse(
         localStorage.getItem("calculatorHistory")
     );
 
-    if(savedHistory){
+    if (savedHistory) {
 
         savedHistory.forEach(history => {
 
@@ -211,7 +242,7 @@ function loadHistory(){
 
 }
 
-function addToHistory(expression, result){
+function addToHistory(expression, result) {
 
     const item = document.createElement("div");
 
@@ -225,11 +256,11 @@ function addToHistory(expression, result){
 
 }
 
-function loadHistory(){
+function loadHistory() {
 
     const savedHistory = localStorage.getItem("calculatorHistory");
 
-    if(savedHistory){
+    if (savedHistory) {
 
         historyList.innerHTML = savedHistory;
 
@@ -237,7 +268,7 @@ function loadHistory(){
 
 }
 
-function addToHistory(expression, result){
+function addToHistory(expression, result) {
 
     const item = document.createElement("div");
 
@@ -255,9 +286,9 @@ function addToHistory(expression, result){
    CALCULATE
 ========================= */
 
-function calculate(){
+function calculate() {
 
-    try{
+    try {
 
         const expression = screen.value;
 
@@ -267,7 +298,7 @@ function calculate(){
 
         addToHistory(expression, result);
 
-    }catch{
+    } catch {
 
         screen.value = "Error";
 
@@ -293,35 +324,35 @@ document.addEventListener("keydown", (event) => {
 
     const key = event.key;
 
-    if(/[0-9]/.test(key)){
+    if (/[0-9]/.test(key)) {
 
         screen.value += key;
 
     }
 
-    else if(key === "."){
+    else if (key === ".") {
 
         screen.value += key;
 
     }
 
-    else if(
+    else if (
         key === "+" ||
         key === "-" ||
         key === "*" ||
         key === "/" ||
         key === "%"
-    ){
+    ) {
 
         const lastChar = screen.value.slice(-1);
 
-        if(
+        if (
             lastChar === "+" ||
             lastChar === "-" ||
             lastChar === "*" ||
             lastChar === "/" ||
             lastChar === "%"
-        ){
+        ) {
             return;
         }
 
@@ -329,7 +360,7 @@ document.addEventListener("keydown", (event) => {
 
     }
 
-    else if(key === "Enter"){
+    else if (key === "Enter") {
 
         event.preventDefault();
 
@@ -337,7 +368,7 @@ document.addEventListener("keydown", (event) => {
 
     }
 
-    else if(key === "Backspace"){
+    else if (key === "Backspace") {
 
         event.preventDefault();
 
@@ -345,13 +376,41 @@ document.addEventListener("keydown", (event) => {
 
     }
 
-    else if(key === "Escape"){
+    else if (key === "Escape") {
 
         screen.value = "";
 
     }
 
 });
+
+/* =========================
+   ANGLE CONVERSION
+========================= */
+
+function toRadians(value) {
+
+    if (angleMode === "DEG") {
+
+        return value * (Math.PI / 180);
+
+    }
+
+    return value;
+
+}
+
+function fromRadians(value) {
+
+    if (angleMode === "DEG") {
+
+        return value * (180 / Math.PI);
+
+    }
+
+    return value;
+
+}
 
 /* =========================
    SCIENTIFIC BUTTONS
@@ -365,38 +424,68 @@ scientificButtons.forEach(button => {
 
         const expression = screen.value;
 
-        try{
+        try {
 
-            switch(value){
+            switch (value) {
 
                 case "sin":
-                    screen.value = Math.sin(eval(screen.value));
+
+                    screen.value = Math.sin(
+                        toRadians(eval(screen.value))
+                    );
+
                     addToHistory(expression, screen.value);
+
                     break;
 
                 case "cos":
-                    screen.value = Math.cos(eval(screen.value));
+
+                    screen.value = Math.cos(
+                        toRadians(eval(screen.value))
+                    );
+
                     addToHistory(expression, screen.value);
+
                     break;
 
                 case "tan":
-                    screen.value = Math.tan(eval(screen.value));
+
+                    screen.value = Math.tan(
+                        toRadians(eval(screen.value))
+                    );
+
                     addToHistory(expression, screen.value);
+
                     break;
 
                 case "asin":
-                    screen.value = Math.asin(eval(screen.value));
+
+                    screen.value = fromRadians(
+                        Math.asin(eval(screen.value))
+                    );
+
                     addToHistory(expression, screen.value);
+
                     break;
 
                 case "acos":
-                    screen.value = Math.acos(eval(screen.value));
+
+                    screen.value = fromRadians(
+                        Math.acos(eval(screen.value))
+                    );
+
                     addToHistory(expression, screen.value);
+
                     break;
 
                 case "atan":
-                    screen.value = Math.atan(eval(screen.value));
+
+                    screen.value = fromRadians(
+                        Math.atan(eval(screen.value))
+                    );
+
                     addToHistory(expression, screen.value);
+
                     break;
 
                 case "log":
@@ -441,7 +530,7 @@ scientificButtons.forEach(button => {
                     let num = eval(screen.value);
                     let result = 1;
 
-                    for(let i = 1; i <= num; i++){
+                    for (let i = 1; i <= num; i++) {
                         result *= i;
                     }
 
@@ -478,7 +567,7 @@ scientificButtons.forEach(button => {
 
             }
 
-        }catch{
+        } catch {
 
             screen.value = "Error";
 
