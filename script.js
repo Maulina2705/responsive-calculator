@@ -22,10 +22,16 @@ const degBtn = document.getElementById("degBtn");
 const radBtn = document.getElementById("radBtn");
 
 let angleMode = "DEG";
+
+/* =========================
+   CALCULATOR STATE
+========================= */
+
 let lastOperator = "";
 let lastNumber = "";
-let waitingForNewNumber = false;
+
 let justCalculated = false;
+let waitingForNewNumber = false;
 
 /* =========================
    HISTORY
@@ -34,21 +40,30 @@ let justCalculated = false;
 const historyPanel = document.querySelector(".history-panel");
 const historyList = document.querySelector(".history-list");
 
-const clearHistoryButton = document.getElementById("clearHistory");
+const clearHistoryButton =
+    document.getElementById("clearHistory");
 
 /* =========================
    BUTTONS
 ========================= */
 
-const numberButtons = document.querySelectorAll(".number");
-const operatorButtons = document.querySelectorAll(".operator");
+const numberButtons =
+    document.querySelectorAll(".number");
 
-const clearButton = document.querySelector(".clear");
-const backspaceButton = document.querySelector(".backspace");
+const operatorButtons =
+    document.querySelectorAll(".operator");
 
-const equalButton = document.querySelector(".equal");
+const clearButton =
+    document.querySelector(".clear");
 
-const scientificButtons = document.querySelectorAll(".scientific");
+const backspaceButton =
+    document.querySelector(".backspace");
+
+const equalButton =
+    document.querySelector(".equal");
+
+const scientificButtons =
+    document.querySelectorAll(".scientific");
 
 /* =========================
    LOAD SAVED THEME
@@ -56,7 +71,7 @@ const scientificButtons = document.querySelectorAll(".scientific");
 
 const savedTheme = localStorage.getItem("theme");
 
-if (savedTheme === "light") {
+if(savedTheme === "light"){
 
     body.classList.add("light-mode");
 
@@ -72,13 +87,13 @@ themeToggle.addEventListener("click", () => {
 
     body.classList.toggle("light-mode");
 
-    if (body.classList.contains("light-mode")) {
+    if(body.classList.contains("light-mode")){
 
         themeToggle.textContent = "☀️";
 
         localStorage.setItem("theme", "light");
 
-    } else {
+    }else{
 
         themeToggle.textContent = "🌙";
 
@@ -144,11 +159,12 @@ radBtn.addEventListener("click", () => {
    HISTORY FUNCTIONS
 ========================= */
 
-function saveHistory() {
+function saveHistory(){
 
     const items = [];
 
-    document.querySelectorAll(".history-item").forEach(item => {
+    document.querySelectorAll(".history-item")
+    .forEach(item => {
 
         items.push(item.textContent);
 
@@ -161,17 +177,18 @@ function saveHistory() {
 
 }
 
-function loadHistory() {
+function loadHistory(){
 
     const savedHistory = JSON.parse(
         localStorage.getItem("calculatorHistory")
     );
 
-    if (savedHistory) {
+    if(savedHistory){
 
         savedHistory.forEach(history => {
 
-            const item = document.createElement("div");
+            const item =
+                document.createElement("div");
 
             item.classList.add("history-item");
 
@@ -185,7 +202,7 @@ function loadHistory() {
 
 }
 
-function addToHistory(expression, result) {
+function addToHistory(expression, result){
 
     const item = document.createElement("div");
 
@@ -203,23 +220,90 @@ function addToHistory(expression, result) {
    ANGLE CONVERSION
 ========================= */
 
-function toRadians(value) {
+function toRadians(value){
 
-    if (angleMode === "DEG") {
+    if(angleMode === "DEG"){
+
         return value * (Math.PI / 180);
+
     }
 
     return value;
 
 }
 
-function fromRadians(value) {
+function fromRadians(value){
 
-    if (angleMode === "DEG") {
+    if(angleMode === "DEG"){
+
         return value * (180 / Math.PI);
+
     }
 
     return value;
+
+}
+
+/* =========================
+   FORMAT EXPRESSION
+========================= */
+
+function formatExpression(expression){
+
+    expression = expression.replace(
+        /(\\d+)!/g,
+        (_, n) => {
+
+            let result = 1;
+
+            for(let i = 1; i <= n; i++){
+                result *= i;
+            }
+
+            return result;
+        }
+    );
+
+    return expression
+
+        .replace(/sin\\(/g,
+            "Math.sin(toRadians(")
+
+        .replace(/cos\\(/g,
+            "Math.cos(toRadians(")
+
+        .replace(/tan\\(/g,
+            "Math.tan(toRadians(")
+
+        .replace(/asin\\(/g,
+            "fromRadians(Math.asin(")
+
+        .replace(/acos\\(/g,
+            "fromRadians(Math.acos(")
+
+        .replace(/atan\\(/g,
+            "fromRadians(Math.atan(")
+
+        .replace(/log\\(/g,
+            "Math.log10(")
+
+        .replace(/ln\\(/g,
+            "Math.log(")
+
+        .replace(/√\\(/g,
+            "Math.sqrt(")
+
+        .replace(/abs\\(/g,
+            "Math.abs(")
+
+        .replace(/π/g,
+            "Math.PI")
+
+        .replace(/\\be\\b/g,
+            "Math.E")
+
+        .replace(/\\^/g,
+            "**");
 
 }
 
@@ -231,9 +315,7 @@ numberButtons.forEach(button => {
 
     button.addEventListener("click", () => {
 
-        /* Setelah hasil keluar */
-
-        if (waitingForNewNumber) {
+        if(waitingForNewNumber){
 
             screen.textContent = "";
             expressionDisplay.textContent = "";
@@ -243,13 +325,15 @@ numberButtons.forEach(button => {
 
         }
 
-        if (screen.textContent === "0") {
+        if(screen.textContent === "0"){
             screen.textContent = "";
         }
 
-        screen.textContent += button.textContent;
+        expressionDisplay.textContent +=
+            button.textContent;
 
-        expressionDisplay.textContent += button.textContent;
+        screen.textContent =
+            expressionDisplay.textContent;
 
     });
 
@@ -265,15 +349,15 @@ operatorButtons.forEach(button => {
 
         const operator = button.textContent;
 
-        let expression = expressionDisplay.textContent;
+        let expression =
+            expressionDisplay.textContent;
 
-        /* Jika habis calculate */
-
-        if (justCalculated) {
+        if(justCalculated){
 
             expression = screen.textContent;
 
-            expressionDisplay.textContent = expression;
+            expressionDisplay.textContent =
+                expression;
 
             justCalculated = false;
         }
@@ -282,32 +366,30 @@ operatorButtons.forEach(button => {
 
         const lastChar = expression.slice(-1);
 
-        /* Replace operator */
-
-        if (
+        if(
             lastChar === "+" ||
             lastChar === "-" ||
             lastChar === "*" ||
             lastChar === "/" ||
             lastChar === "%"
-        ) {
+        ){
 
-            expression = expression.slice(0, -1);
-
-            screen.textContent =
-                screen.textContent.slice(0, -1);
+            expression =
+                expression.slice(0, -1);
 
         }
 
         expression += operator;
 
-        expressionDisplay.textContent = expression;
+        expressionDisplay.textContent =
+            expression;
 
         screen.textContent = expression;
 
     });
 
 });
+
 /* =========================
    CLEAR BUTTON
 ========================= */
@@ -326,102 +408,68 @@ clearButton.addEventListener("click", () => {
 
 backspaceButton.addEventListener("click", () => {
 
-    screen.textContent =
-        screen.textContent.slice(0, -1);
-
     expressionDisplay.textContent =
         expressionDisplay.textContent.slice(0, -1);
 
-    if (screen.textContent === "") {
+    screen.textContent =
+        expressionDisplay.textContent;
+
+    if(screen.textContent === ""){
         screen.textContent = "0";
     }
 
 });
 
 /* =========================
-   FORMAT EXPRESSION
-========================= */
-
-function formatExpression(expression) {
-
-    expression = expression.replace(
-        /(\d+)!/g,
-        (_, n) => {
-
-            let result = 1;
-
-            for (let i = 1; i <= n; i++) {
-                result *= i;
-            }
-
-            return result;
-        }
-    );
-
-    return expression
-
-        .replace(/sin\(/g, "Math.sin(toRadians(")
-        .replace(/cos\(/g, "Math.cos(toRadians(")
-        .replace(/tan\(/g, "Math.tan(toRadians(")
-
-        .replace(/asin\(/g, "fromRadians(Math.asin(")
-        .replace(/acos\(/g, "fromRadians(Math.acos(")
-        .replace(/atan\(/g, "fromRadians(Math.atan(")
-
-        .replace(/log\(/g, "Math.log10(")
-        .replace(/ln\(/g, "Math.log(")
-
-        .replace(/√\(/g, "Math.sqrt(")
-
-        .replace(/abs\(/g, "Math.abs(")
-
-        .replace(/π/g, "Math.PI")
-        .replace(/\be\b/g, "Math.E")
-
-        .replace(/\^/g, "**");
-
-}
-
-/* =========================
    CALCULATE
 ========================= */
 
-function calculate() {
+function calculate(){
 
-    try {
+    try{
 
-        let expression = expressionDisplay.textContent;
+        let expression =
+            expressionDisplay.textContent;
+
+        /* ENTER BERULANG */
+
+        if(
+            justCalculated &&
+            lastOperator &&
+            lastNumber
+        ){
+
+            expression =
+                `${screen.textContent}${lastOperator}${lastNumber}`;
+
+        }
 
         /* AUTO CLOSE PARENTHESIS */
 
         const openBrackets =
-            (expression.match(/\(/g) || []).length;
+            (expression.match(/\\(/g) || []).length;
 
         const closeBrackets =
-            (expression.match(/\)/g) || []).length;
+            (expression.match(/\\)/g) || []).length;
 
         const missingBrackets =
             openBrackets - closeBrackets;
 
-        if (missingBrackets > 0) {
+        if(missingBrackets > 0){
 
-            expression += ")".repeat(missingBrackets);
-
-        }
-
-        /* ENTER BERULANG */
-
-        if (justCalculated && lastOperator && lastNumber) {
-
-            expression = `${screen.textContent}${lastOperator}${lastNumber}`;
+            expression +=
+                ")".repeat(missingBrackets);
 
         }
 
-        /* Ambil operator terakhir */
+        /* SIMPAN OPERATOR */
 
-        const match = expression.match(/([+\-*/%])(\d+\.?\d*)$/);
+        const match =
+            expression.match(
+                /([+\\-*/%])(\\d+\\.?\\d*)$/
+            );
 
-        if (match) {
+        if(match){
 
             lastOperator = match[1];
             lastNumber = match[2];
@@ -431,18 +479,21 @@ function calculate() {
         const formattedExpression =
             formatExpression(expression);
 
-        const result = eval(formattedExpression);
+        const result =
+            eval(formattedExpression);
 
         screen.textContent = result;
 
-        expressionDisplay.textContent = expression;
+        expressionDisplay.textContent =
+            expression;
 
         addToHistory(expression, result);
 
         justCalculated = true;
+
         waitingForNewNumber = true;
 
-    } catch {
+    }catch{
 
         screen.textContent = "Error";
 
@@ -468,15 +519,11 @@ document.addEventListener("keydown", (event) => {
 
     const key = event.key;
 
-    /* =========================
-       NUMBER
-    ========================= */
+    /* NUMBER */
 
-    if (/[0-9]/.test(key)) {
+    if(/[0-9]/.test(key)){
 
-        /* Restart setelah hasil */
-
-        if (waitingForNewNumber) {
+        if(waitingForNewNumber){
 
             screen.textContent = "";
             expressionDisplay.textContent = "";
@@ -486,49 +533,47 @@ document.addEventListener("keydown", (event) => {
 
         }
 
-        if (screen.textContent === "0") {
+        if(screen.textContent === "0"){
             screen.textContent = "";
         }
 
-        screen.textContent += key;
-
         expressionDisplay.textContent += key;
+
+        screen.textContent =
+            expressionDisplay.textContent;
 
     }
 
-    /* =========================
-       DECIMAL
-    ========================= */
+    /* DECIMAL */
 
-    else if (key === ".") {
-
-        screen.textContent += key;
+    else if(key === "."){
 
         expressionDisplay.textContent += key;
 
+        screen.textContent =
+            expressionDisplay.textContent;
+
     }
 
-    /* =========================
-       OPERATOR
-    ========================= */
+    /* OPERATOR */
 
-    else if (
+    else if(
         key === "+" ||
         key === "-" ||
         key === "*" ||
         key === "/" ||
         key === "%"
-    ) {
+    ){
 
-        let expression = expressionDisplay.textContent;
+        let expression =
+            expressionDisplay.textContent;
 
-        /* Jika habis calculate */
-
-        if (justCalculated) {
+        if(justCalculated){
 
             expression = screen.textContent;
 
-            expressionDisplay.textContent = expression;
+            expressionDisplay.textContent =
+                expression;
 
             justCalculated = false;
         }
@@ -537,36 +582,31 @@ document.addEventListener("keydown", (event) => {
 
         const lastChar = expression.slice(-1);
 
-        /* Replace operator */
-
-        if (
+        if(
             lastChar === "+" ||
             lastChar === "-" ||
             lastChar === "*" ||
             lastChar === "/" ||
             lastChar === "%"
-        ) {
+        ){
 
-            expression = expression.slice(0, -1);
-
-            screen.textContent =
-                screen.textContent.slice(0, -1);
+            expression =
+                expression.slice(0, -1);
 
         }
 
         expression += key;
 
-        expressionDisplay.textContent = expression;
+        expressionDisplay.textContent =
+            expression;
 
         screen.textContent = expression;
 
     }
 
-    /* =========================
-       ENTER
-    ========================= */
+    /* ENTER */
 
-    else if (key === "Enter") {
+    else if(key === "Enter"){
 
         event.preventDefault();
 
@@ -574,31 +614,28 @@ document.addEventListener("keydown", (event) => {
 
     }
 
-    /* =========================
-       BACKSPACE
-    ========================= */
+    /* BACKSPACE */
 
-    else if (key === "Backspace") {
+    else if(key === "Backspace"){
 
         event.preventDefault();
 
-        screen.textContent =
-            screen.textContent.slice(0, -1);
-
         expressionDisplay.textContent =
-            expressionDisplay.textContent.slice(0, -1);
+            expressionDisplay.textContent
+            .slice(0, -1);
 
-        if (screen.textContent === "") {
+        screen.textContent =
+            expressionDisplay.textContent;
+
+        if(screen.textContent === ""){
             screen.textContent = "0";
         }
 
     }
 
-    /* =========================
-       ESCAPE
-    ========================= */
+    /* ESCAPE */
 
-    else if (key === "Escape") {
+    else if(key === "Escape"){
 
         screen.textContent = "0";
 
@@ -618,9 +655,7 @@ scientificButtons.forEach(button => {
 
         const value = button.textContent;
 
-        /* Reset setelah hasil */
-
-        if (waitingForNewNumber) {
+        if(waitingForNewNumber){
 
             screen.textContent = "";
             expressionDisplay.textContent = "";
@@ -630,140 +665,171 @@ scientificButtons.forEach(button => {
 
         }
 
-        switch (value) {
+        switch(value){
 
-            /* =========================
-               TRIGONOMETRY
-            ========================= */
+            /* TRIG */
 
             case "sin":
 
-                expressionDisplay.textContent += "sin(";
-                screen.textContent += "sin(";
+                expressionDisplay.textContent +=
+                    "sin(";
+
+                screen.textContent =
+                    expressionDisplay.textContent;
 
                 break;
 
             case "cos":
 
-                expressionDisplay.textContent += "cos(";
-                screen.textContent += "cos(";
+                expressionDisplay.textContent +=
+                    "cos(";
+
+                screen.textContent =
+                    expressionDisplay.textContent;
 
                 break;
 
             case "tan":
 
-                expressionDisplay.textContent += "tan(";
-                screen.textContent += "tan(";
+                expressionDisplay.textContent +=
+                    "tan(";
+
+                screen.textContent =
+                    expressionDisplay.textContent;
 
                 break;
 
             case "asin":
 
-                expressionDisplay.textContent += "asin(";
-                screen.textContent += "asin(";
+                expressionDisplay.textContent +=
+                    "asin(";
+
+                screen.textContent =
+                    expressionDisplay.textContent;
 
                 break;
 
             case "acos":
 
-                expressionDisplay.textContent += "acos(";
-                screen.textContent += "acos(";
+                expressionDisplay.textContent +=
+                    "acos(";
+
+                screen.textContent =
+                    expressionDisplay.textContent;
 
                 break;
 
             case "atan":
 
-                expressionDisplay.textContent += "atan(";
-                screen.textContent += "atan(";
+                expressionDisplay.textContent +=
+                    "atan(";
+
+                screen.textContent =
+                    expressionDisplay.textContent;
 
                 break;
 
-            /* =========================
-               LOG
-            ========================= */
+            /* LOG */
 
             case "log":
 
-                expressionDisplay.textContent += "log(";
-                screen.textContent += "log(";
+                expressionDisplay.textContent +=
+                    "log(";
+
+                screen.textContent =
+                    expressionDisplay.textContent;
 
                 break;
 
             case "ln":
 
-                expressionDisplay.textContent += "ln(";
-                screen.textContent += "ln(";
+                expressionDisplay.textContent +=
+                    "ln(";
+
+                screen.textContent =
+                    expressionDisplay.textContent;
 
                 break;
 
-            /* =========================
-               SQRT
-            ========================= */
+            /* SQRT */
 
             case "√":
 
-                expressionDisplay.textContent += "√(";
-                screen.textContent += "√(";
+                expressionDisplay.textContent +=
+                    "√(";
+
+                screen.textContent =
+                    expressionDisplay.textContent;
 
                 break;
 
-            /* =========================
-               POWER
-            ========================= */
+            /* POWER */
 
             case "x²":
 
-                expressionDisplay.textContent += "^2";
-                screen.textContent += "²";
+                expressionDisplay.textContent +=
+                    "^2";
+
+                screen.textContent =
+                    expressionDisplay.textContent;
 
                 break;
 
             case "x³":
 
-                expressionDisplay.textContent += "^3";
-                screen.textContent += "³";
+                expressionDisplay.textContent +=
+                    "^3";
+
+                screen.textContent =
+                    expressionDisplay.textContent;
 
                 break;
 
             case "^":
 
-                expressionDisplay.textContent += "^";
-                screen.textContent += "^";
+                expressionDisplay.textContent +=
+                    "^";
+
+                screen.textContent =
+                    expressionDisplay.textContent;
 
                 break;
 
-            /* =========================
-               CONSTANTS
-            ========================= */
+            /* CONSTANT */
 
             case "π":
 
-                expressionDisplay.textContent += "π";
-                screen.textContent += "π";
+                expressionDisplay.textContent +=
+                    "π";
+
+                screen.textContent =
+                    expressionDisplay.textContent;
 
                 break;
 
             case "e":
 
-                expressionDisplay.textContent += "e";
-                screen.textContent += "e";
+                expressionDisplay.textContent +=
+                    "e";
+
+                screen.textContent =
+                    expressionDisplay.textContent;
 
                 break;
 
-            /* =========================
-               ABS
-            ========================= */
+            /* ABS */
 
             case "|x|":
 
-                expressionDisplay.textContent += "abs(";
-                screen.textContent += "abs(";
+                expressionDisplay.textContent +=
+                    "abs(";
+
+                screen.textContent =
+                    expressionDisplay.textContent;
 
                 break;
 
-            /* =========================
-               RECIPROCAL
-            ========================= */
+            /* RECIPROCAL */
 
             case "1/x":
 
@@ -771,36 +837,41 @@ scientificButtons.forEach(button => {
                     `1/(${expressionDisplay.textContent})`;
 
                 screen.textContent =
-                    `1/(${screen.textContent})`;
+                    expressionDisplay.textContent;
 
                 break;
 
-            /* =========================
-               FACTORIAL
-            ========================= */
+            /* FACTORIAL */
 
             case "!":
 
-                expressionDisplay.textContent += "!";
-                screen.textContent += "!";
+                expressionDisplay.textContent +=
+                    "!";
+
+                screen.textContent =
+                    expressionDisplay.textContent;
 
                 break;
 
-            /* =========================
-               PARENTHESIS
-            ========================= */
+            /* PARENTHESIS */
 
             case "(":
 
-                expressionDisplay.textContent += "(";
-                screen.textContent += "(";
+                expressionDisplay.textContent +=
+                    "(";
+
+                screen.textContent =
+                    expressionDisplay.textContent;
 
                 break;
 
             case ")":
 
-                expressionDisplay.textContent += ")";
-                screen.textContent += ")";
+                expressionDisplay.textContent +=
+                    ")";
+
+                screen.textContent =
+                    expressionDisplay.textContent;
 
                 break;
 
@@ -818,7 +889,9 @@ clearHistoryButton.addEventListener("click", () => {
 
     historyList.innerHTML = "";
 
-    localStorage.removeItem("calculatorHistory");
+    localStorage.removeItem(
+        "calculatorHistory"
+    );
 
 });
 
