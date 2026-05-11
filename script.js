@@ -480,13 +480,7 @@ function renderFraction(fraction) {
 numberButtons.forEach(button => {
 
     button.addEventListener("click", () => {
-        if (showingFraction) {
-
-            showingFraction = false;
-
-            updateScreen("0");
-
-        }
+        showingFraction = false;
 
         if (waitingForNewNumber) {
 
@@ -521,12 +515,6 @@ numberButtons.forEach(button => {
 ========================= */
 
 operatorButtons.forEach(button => {
-
-    if (showingFraction) {
-
-        showingFraction = false;
-
-    }
 
     button.addEventListener("click", () => {
 
@@ -582,7 +570,6 @@ operatorButtons.forEach(button => {
 
 clearButton.addEventListener("click", () => {
 
-    showingFraction = false;
     updateScreen("0");
 
     expressionDisplay.textContent = "";
@@ -594,8 +581,6 @@ clearButton.addEventListener("click", () => {
 ========================= */
 
 backspaceButton.addEventListener("click", () => {
-
-    showingFraction = false;
 
     expressionDisplay.textContent =
         expressionDisplay.textContent
