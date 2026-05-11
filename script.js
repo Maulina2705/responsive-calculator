@@ -998,6 +998,8 @@ scientificButtons.forEach(button => {
                         decimalToFraction(value);
 
                     screen.textContent = fraction;
+                    expressionDisplay.textContent =
+    fraction;
 
                     addToHistory(
                         `fraction(${value})`,
@@ -1005,7 +1007,6 @@ scientificButtons.forEach(button => {
                     );
 
                     justCalculated = true;
-                    waitingForNewNumber = true;
 
                 } catch {
 
