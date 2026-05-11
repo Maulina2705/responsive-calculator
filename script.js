@@ -73,3 +73,62 @@ equalButton.addEventListener("click", () => {
     }
 
 });
+
+/* =========================
+   KEYBOARD SUPPORT
+========================= */
+
+document.addEventListener("keydown", (event) => {
+
+    const key = event.key;
+
+    /* NUMBER */
+
+    if(
+        (key >= "0" && key <= "9") ||
+        key === "."
+    ){
+        screen.value += key;
+    }
+
+    /* OPERATOR */
+
+    if(
+        key === "+" ||
+        key === "-" ||
+        key === "*" ||
+        key === "/" ||
+        key === "%"
+    ){
+        screen.value += key;
+    }
+
+    /* ENTER */
+
+    if(key === "Enter"){
+
+        try{
+
+            screen.value = eval(screen.value);
+
+        }catch{
+
+            screen.value = "Error";
+
+        }
+
+    }
+
+    /* BACKSPACE */
+
+    if(key === "Backspace"){
+        screen.value = screen.value.slice(0, -1);
+    }
+
+    /* ESC */
+
+    if(key === "Escape"){
+        screen.value = "";
+    }
+
+});
