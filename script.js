@@ -727,7 +727,10 @@ document.addEventListener("keydown", (event) => {
 
     if (/[0-9]/.test(key)) {
 
-        if (waitingForNewNumber) {
+        if (
+            waitingForNewNumber &&
+            value !== "a/b"
+        ) {
 
             updateScreen("");
 
