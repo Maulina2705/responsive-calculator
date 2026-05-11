@@ -763,6 +763,42 @@ function decimalToFraction(decimal) {
 }
 
 /* =========================
+   RENDER FRACTION
+========================= */
+
+function renderFraction(fraction) {
+
+    const parts = fraction.split("/");
+
+    if (parts.length !== 2) {
+
+        screen.textContent = fraction;
+
+        return;
+    }
+
+    const numerator = parts[0];
+    const denominator = parts[1];
+
+    screen.innerHTML = `
+    
+        <div class="fraction">
+
+            <span class="top">
+                ${numerator}
+            </span>
+
+            <span class="bottom">
+                ${denominator}
+            </span>
+
+        </div>
+    
+    `;
+
+}
+
+/* =========================
    SCIENTIFIC BUTTONS
 ========================= */
 
@@ -997,9 +1033,9 @@ scientificButtons.forEach(button => {
                     const fraction =
                         decimalToFraction(value);
 
-                    screen.textContent = fraction;
+                    renderFraction(fraction);
                     expressionDisplay.textContent =
-    fraction;
+                        fraction;
 
                     addToHistory(
                         `fraction(${value})`,

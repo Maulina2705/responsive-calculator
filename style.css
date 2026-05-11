@@ -363,3 +363,31 @@ button:hover{
     }
 
 }
+
+/* FRACTION DISPLAY */
+
+.fraction{
+    display:inline-flex;
+
+    flex-direction:column;
+
+    align-items:center;
+
+    justify-content:center;
+
+    font-size:2.5rem;
+
+    font-weight:bold;
+
+    line-height:1.1;
+}
+
+.fraction .top{
+    border-bottom:3px solid black;
+
+    padding:0 10px;
+}
+
+.fraction .bottom{
+    padding:0 10px;
+}
