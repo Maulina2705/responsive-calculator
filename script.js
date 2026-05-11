@@ -1073,18 +1073,31 @@ scientificButtons.forEach(button => {
 
                 try {
 
-                    const currentValue =
-                        parseFloat(screen.innerText);
-
-                    if (isNaN(currentValue)) return;
-
                     const cleanValue =
-                        Number(currentValue.toFixed(10));
+                        Number(lastAnswer.toFixed(10));
 
                     const fraction =
                         decimalToFraction(cleanValue);
 
                     renderFraction(fraction);
+
+                    expressionDisplay.innerHTML = `
+
+            <span class="pretty-fraction">
+
+                <sup>
+                    ${fraction.split("/")[0]}
+                </sup>
+
+                <span class="fraction-line"></span>
+
+                <sub>
+                    ${fraction.split("/")[1]}
+                </sub>
+
+            </span>
+
+        `;
 
                     addToHistory(
                         cleanValue,
