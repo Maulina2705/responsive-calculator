@@ -15,6 +15,15 @@ const themeToggle = document.getElementById("themeToggle");
 const body = document.body;
 
 /* =========================
+   ANGLE MODE
+========================= */
+
+const degBtn = document.getElementById("degBtn");
+const radBtn = document.getElementById("radBtn");
+
+let angleMode = "DEG";
+
+/* =========================
    HISTORY
 ========================= */
 
@@ -38,21 +47,12 @@ const equalButton = document.querySelector(".equal");
 const scientificButtons = document.querySelectorAll(".scientific");
 
 /* =========================
-   ANGLE MODE
-========================= */
-
-const degBtn = document.getElementById("degBtn");
-const radBtn = document.getElementById("radBtn");
-
-let angleMode = "DEG";
-
-/* =========================
    LOAD SAVED THEME
 ========================= */
 
 const savedTheme = localStorage.getItem("theme");
 
-if (savedTheme === "light") {
+if(savedTheme === "light"){
 
     body.classList.add("light-mode");
 
@@ -68,15 +68,13 @@ themeToggle.addEventListener("click", () => {
 
     body.classList.toggle("light-mode");
 
-    /* SAVE THEME */
-
-    if (body.classList.contains("light-mode")) {
+    if(body.classList.contains("light-mode")){
 
         themeToggle.textContent = "☀️";
 
         localStorage.setItem("theme", "light");
 
-    } else {
+    }else{
 
         themeToggle.textContent = "🌙";
 
@@ -139,12 +137,99 @@ radBtn.addEventListener("click", () => {
 });
 
 /* =========================
+   HISTORY FUNCTIONS
+========================= */
+
+function saveHistory(){
+
+    const items = [];
+
+    document.querySelectorAll(".history-item").forEach(item => {
+
+        items.push(item.textContent);
+
+    });
+
+    localStorage.setItem(
+        "calculatorHistory",
+        JSON.stringify(items)
+    );
+
+}
+
+function loadHistory(){
+
+    const savedHistory = JSON.parse(
+        localStorage.getItem("calculatorHistory")
+    );
+
+    if(savedHistory){
+
+        savedHistory.forEach(history => {
+
+            const item = document.createElement("div");
+
+            item.classList.add("history-item");
+
+            item.textContent = history;
+
+            historyList.appendChild(item);
+
+        });
+
+    }
+
+}
+
+function addToHistory(expression, result){
+
+    const item = document.createElement("div");
+
+    item.classList.add("history-item");
+
+    item.textContent = `${expression} = ${result}`;
+
+    historyList.prepend(item);
+
+    saveHistory();
+
+}
+
+/* =========================
+   ANGLE CONVERSION
+========================= */
+
+function toRadians(value){
+
+    if(angleMode === "DEG"){
+        return value * (Math.PI / 180);
+    }
+
+    return value;
+
+}
+
+function fromRadians(value){
+
+    if(angleMode === "DEG"){
+        return value * (180 / Math.PI);
+    }
+
+    return value;
+
+}
+
+/* =========================
    NUMBER BUTTONS
 ========================= */
 
 numberButtons.forEach(button => {
 
     button.addEventListener("click", () => {
+
+        if(screen.textContent === "0"){
+            screen.textContent = "";
+        }
 
         screen.textContent += button.textContent;
 
@@ -162,15 +247,16 @@ operatorButtons.forEach(button => {
 
     button.addEventListener("click", () => {
 
-        const lastChar = screen.textContent.slice(-1);
+        const lastChar =
+            expressionDisplay.textContent.slice(-1);
 
-        if (
+        if(
             lastChar === "+" ||
             lastChar === "-" ||
             lastChar === "*" ||
             lastChar === "/" ||
             lastChar === "%"
-        ) {
+        ){
             return;
         }
 
@@ -200,111 +286,28 @@ clearButton.addEventListener("click", () => {
 
 backspaceButton.addEventListener("click", () => {
 
-    screen.textContent = screen.textContent.slice(0, -1);
+    screen.textContent =
+        screen.textContent.slice(0, -1);
 
     expressionDisplay.textContent =
         expressionDisplay.textContent.slice(0, -1);
 
-    if (screen.textContent === "") {
+    if(screen.textContent === ""){
         screen.textContent = "0";
     }
 
 });
 
 /* =========================
-   HISTORY FUNCTIONS
-========================= */
-
-function saveHistory() {
-
-    const items = [];
-
-    document.querySelectorAll(".history-item").forEach(item => {
-
-        items.push(item.textContent);
-
-    });
-
-    localStorage.setItem(
-        "calculatorHistory",
-        JSON.stringify(items)
-    );
-
-}
-
-function loadHistory() {
-
-    const savedHistory = JSON.parse(
-        localStorage.getItem("calculatorHistory")
-    );
-
-    if (savedHistory) {
-
-        savedHistory.forEach(history => {
-
-            const item = document.createElement("div");
-
-            item.classList.add("history-item");
-
-            item.textContent = history;
-
-            historyList.appendChild(item);
-
-        });
-
-    }
-
-}
-
-function addToHistory(expression, result) {
-
-    const item = document.createElement("div");
-
-    item.classList.add("history-item");
-
-    item.textContent = `${expression} = ${result}`;
-
-    historyList.prepend(item);
-
-    saveHistory();
-
-}
-
-function loadHistory() {
-
-    const savedHistory = localStorage.getItem("calculatorHistory");
-
-    if (savedHistory) {
-
-        historyList.innerHTML = savedHistory;
-
-    }
-
-}
-
-function addToHistory(expression, result) {
-
-    const item = document.createElement("div");
-
-    item.classList.add("history-item");
-
-    item.textContent = `${expression} = ${result}`;
-
-    historyList.prepend(item);
-
-    saveHistory();
-
-}
-
-/* =========================
    CALCULATE
 ========================= */
 
-function calculate() {
+function calculate(){
 
-    try {
+    try{
 
-        const expression = expressionDisplay.textContent;
+        const expression =
+            expressionDisplay.textContent;
 
         const result = eval(expression);
 
@@ -312,7 +315,7 @@ function calculate() {
 
         addToHistory(expression, result);
 
-    } catch {
+    }catch{
 
         screen.textContent = "Error";
 
@@ -338,43 +341,41 @@ document.addEventListener("keydown", (event) => {
 
     const key = event.key;
 
-    if (/[0-9]/.test(key)) {
+    if(/[0-9]/.test(key)){
+
+        if(screen.textContent === "0"){
+            screen.textContent = "";
+        }
 
         screen.textContent += key;
 
+        expressionDisplay.textContent += key;
+
     }
 
-    else if (key === ".") {
+    else if(key === "."){
 
         screen.textContent += key;
 
+        expressionDisplay.textContent += key;
+
     }
 
-    else if (
+    else if(
         key === "+" ||
         key === "-" ||
         key === "*" ||
         key === "/" ||
         key === "%"
-    ) {
-
-        const lastChar = screen.textContent.slice(-1);
-
-        if (
-            lastChar === "+" ||
-            lastChar === "-" ||
-            lastChar === "*" ||
-            lastChar === "/" ||
-            lastChar === "%"
-        ) {
-            return;
-        }
+    ){
 
         screen.textContent += key;
 
+        expressionDisplay.textContent += key;
+
     }
 
-    else if (key === "Enter") {
+    else if(key === "Enter"){
 
         event.preventDefault();
 
@@ -382,49 +383,31 @@ document.addEventListener("keydown", (event) => {
 
     }
 
-    else if (key === "Backspace") {
+    else if(key === "Backspace"){
 
         event.preventDefault();
 
-        screen.textContent = screen.textContent.slice(0, -1);
+        screen.textContent =
+            screen.textContent.slice(0, -1);
+
+        expressionDisplay.textContent =
+            expressionDisplay.textContent.slice(0, -1);
+
+        if(screen.textContent === ""){
+            screen.textContent = "0";
+        }
 
     }
 
-    else if (key === "Escape") {
+    else if(key === "Escape"){
 
-        screen.textContent = "";
+        screen.textContent = "0";
+
+        expressionDisplay.textContent = "";
 
     }
 
 });
-
-/* =========================
-   ANGLE CONVERSION
-========================= */
-
-function toRadians(value) {
-
-    if (angleMode === "DEG") {
-
-        return value * (Math.PI / 180);
-
-    }
-
-    return value;
-
-}
-
-function fromRadians(value) {
-
-    if (angleMode === "DEG") {
-
-        return value * (180 / Math.PI);
-
-    }
-
-    return value;
-
-}
 
 /* =========================
    SCIENTIFIC BUTTONS
@@ -436,17 +419,19 @@ scientificButtons.forEach(button => {
 
         const value = button.textContent;
 
-        const expression = screen.textContent;
+        const expression =
+            expressionDisplay.textContent;
 
-        try {
+        try{
 
-            switch (value) {
+            switch(value){
 
                 case "sin":
 
-                    screen.textContent = Math.sin(
-                        toRadians(eval(screen.textContent))
-                    );
+                    screen.textContent =
+                        Math.sin(
+                            toRadians(eval(expression))
+                        );
 
                     addToHistory(expression, screen.textContent);
 
@@ -454,9 +439,10 @@ scientificButtons.forEach(button => {
 
                 case "cos":
 
-                    screen.textContent = Math.cos(
-                        toRadians(eval(screen.textContent))
-                    );
+                    screen.textContent =
+                        Math.cos(
+                            toRadians(eval(expression))
+                        );
 
                     addToHistory(expression, screen.textContent);
 
@@ -464,9 +450,10 @@ scientificButtons.forEach(button => {
 
                 case "tan":
 
-                    screen.textContent = Math.tan(
-                        toRadians(eval(screen.textContent))
-                    );
+                    screen.textContent =
+                        Math.tan(
+                            toRadians(eval(expression))
+                        );
 
                     addToHistory(expression, screen.textContent);
 
@@ -474,9 +461,10 @@ scientificButtons.forEach(button => {
 
                 case "asin":
 
-                    screen.textContent = fromRadians(
-                        Math.asin(eval(screen.textContent))
-                    );
+                    screen.textContent =
+                        fromRadians(
+                            Math.asin(eval(expression))
+                        );
 
                     addToHistory(expression, screen.textContent);
 
@@ -484,9 +472,10 @@ scientificButtons.forEach(button => {
 
                 case "acos":
 
-                    screen.textContent = fromRadians(
-                        Math.acos(eval(screen.textContent))
-                    );
+                    screen.textContent =
+                        fromRadians(
+                            Math.acos(eval(expression))
+                        );
 
                     addToHistory(expression, screen.textContent);
 
@@ -494,94 +483,139 @@ scientificButtons.forEach(button => {
 
                 case "atan":
 
-                    screen.textContent = fromRadians(
-                        Math.atan(eval(screen.textContent))
-                    );
+                    screen.textContent =
+                        fromRadians(
+                            Math.atan(eval(expression))
+                        );
 
                     addToHistory(expression, screen.textContent);
 
                     break;
 
                 case "log":
-                    screen.textContent = Math.log10(eval(screen.textContent));
+
+                    screen.textContent =
+                        Math.log10(eval(expression));
+
                     addToHistory(expression, screen.textContent);
+
                     break;
 
                 case "ln":
-                    screen.textContent = Math.log(eval(screen.textContent));
+
+                    screen.textContent =
+                        Math.log(eval(expression));
+
                     addToHistory(expression, screen.textContent);
+
                     break;
 
                 case "π":
+
                     screen.textContent += Math.PI;
+                    expressionDisplay.textContent += Math.PI;
+
                     break;
 
                 case "e":
+
                     screen.textContent += Math.E;
+                    expressionDisplay.textContent += Math.E;
+
                     break;
 
                 case "√":
-                    screen.textContent = Math.sqrt(eval(screen.textContent));
+
+                    screen.textContent =
+                        Math.sqrt(eval(expression));
+
                     addToHistory(expression, screen.textContent);
+
                     break;
 
                 case "x²":
-                    screen.textContent = Math.pow(eval(screen.textContent), 2);
+
+                    screen.textContent =
+                        Math.pow(eval(expression), 2);
+
                     addToHistory(expression, screen.textContent);
+
                     break;
 
                 case "x³":
-                    screen.textContent = Math.pow(eval(screen.textContent), 3);
+
+                    screen.textContent =
+                        Math.pow(eval(expression), 3);
+
                     addToHistory(expression, screen.textContent);
+
                     break;
 
                 case "^":
+
                     screen.textContent += "**";
+                    expressionDisplay.textContent += "**";
+
                     break;
 
                 case "!":
 
-                    let num = eval(screen.textContent);
+                    let num = eval(expression);
+
                     let result = 1;
 
-                    for (let i = 1; i <= num; i++) {
+                    for(let i = 1; i <= num; i++){
                         result *= i;
                     }
 
                     screen.textContent = result;
 
-                    addToHistory(expression, screen.textContent);
+                    addToHistory(expression, result);
 
                     break;
 
                 case "(":
+
                     screen.textContent += "(";
+                    expressionDisplay.textContent += "(";
+
                     break;
 
                 case ")":
+
                     screen.textContent += ")";
+                    expressionDisplay.textContent += ")";
+
                     break;
 
                 case "|x|":
-                    screen.textContent = Math.abs(eval(screen.textContent));
+
+                    screen.textContent =
+                        Math.abs(eval(expression));
+
                     addToHistory(expression, screen.textContent);
+
                     break;
 
                 case "1/x":
-                    screen.textContent = 1 / eval(screen.textContent);
+
+                    screen.textContent =
+                        1 / eval(expression);
+
                     addToHistory(expression, screen.textContent);
+
                     break;
 
                 case "EXP":
-                    screen.textContent += "e";
-                    break;
 
-                default:
+                    screen.textContent += "e";
+                    expressionDisplay.textContent += "e";
+
                     break;
 
             }
 
-        } catch {
+        }catch{
 
             screen.textContent = "Error";
 
