@@ -434,6 +434,7 @@ function decimalToFraction(decimal){
 
     }
 
+    
     return `${numerator}/${denominator}`;
 
 }
