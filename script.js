@@ -32,6 +32,7 @@ let lastNumber = "";
 
 let justCalculated = false;
 let waitingForNewNumber = false;
+let lastAnswer = 0;
 
 /* =========================
    HISTORY
@@ -554,6 +555,8 @@ function calculate() {
             abs
         );
 
+        lastAnswer = result;
+
         screen.textContent = result;
 
         expressionDisplay.textContent =
@@ -1025,20 +1028,16 @@ scientificButtons.forEach(button => {
 
                 try {
 
-                    const value =
-                        parseFloat(screen.textContent);
-
-                    if (isNaN(value)) return;
-
                     const fraction =
-                        decimalToFraction(value);
+                        decimalToFraction(lastAnswer);
 
                     renderFraction(fraction);
+
                     expressionDisplay.textContent =
                         fraction;
 
                     addToHistory(
-                        `fraction(${value})`,
+                        `${lastAnswer}`,
                         fraction
                     );
 
@@ -1051,7 +1050,6 @@ scientificButtons.forEach(button => {
                 }
 
                 break;
-
             /* PARENTHESIS */
 
             case "(":
