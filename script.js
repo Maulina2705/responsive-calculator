@@ -14,6 +14,15 @@ const themeToggle = document.getElementById("themeToggle");
 const body = document.body;
 
 /* =========================
+   HISTORY
+========================= */
+
+const historyPanel = document.querySelector(".history-panel");
+const historyList = document.querySelector(".history-list");
+
+const clearHistoryButton = document.getElementById("clearHistory");
+
+/* =========================
    BUTTONS
 ========================= */
 
@@ -26,10 +35,6 @@ const backspaceButton = document.querySelector(".backspace");
 const equalButton = document.querySelector(".equal");
 
 const scientificButtons = document.querySelectorAll(".scientific");
-const historyPanel = document.querySelector(".history-panel");
-const historyList = document.querySelector(".history-list");
-
-const clearHistoryButton = document.getElementById("clearHistory");
 
 /* =========================
    THEME TOGGLE
@@ -55,11 +60,12 @@ scientificBtn.addEventListener("click", () => {
 
     scientificMode.classList.remove("hidden");
 
+    historyPanel.style.display = "flex";
+
     scientificBtn.classList.add("active");
     standardBtn.classList.remove("active");
 
     calculator.classList.add("scientific-layout");
-    historyPanel.style.display = "flex";
 
 });
 
@@ -67,11 +73,12 @@ standardBtn.addEventListener("click", () => {
 
     scientificMode.classList.add("hidden");
 
+    historyPanel.style.display = "none";
+
     standardBtn.classList.add("active");
     scientificBtn.classList.remove("active");
 
     calculator.classList.remove("scientific-layout");
-    historyPanel.style.display = "none";
 
 });
 
@@ -98,8 +105,6 @@ operatorButtons.forEach(button => {
     button.addEventListener("click", () => {
 
         const lastChar = screen.value.slice(-1);
-
-        /* Prevent double operator */
 
         if(
             lastChar === "+" ||
@@ -138,7 +143,7 @@ backspaceButton.addEventListener("click", () => {
 });
 
 /* =========================
-   CALCULATE FUNCTION
+   HISTORY FUNCTION
 ========================= */
 
 function addToHistory(expression, result){
@@ -152,6 +157,10 @@ function addToHistory(expression, result){
     historyList.prepend(item);
 
 }
+
+/* =========================
+   CALCULATE
+========================= */
 
 function calculate(){
 
@@ -191,23 +200,17 @@ document.addEventListener("keydown", (event) => {
 
     const key = event.key;
 
-    /* NUMBER */
-
     if(/[0-9]/.test(key)){
 
         screen.value += key;
 
     }
 
-    /* DECIMAL */
-
     else if(key === "."){
 
         screen.value += key;
 
     }
-
-    /* OPERATOR */
 
     else if(
         key === "+" ||
@@ -233,8 +236,6 @@ document.addEventListener("keydown", (event) => {
 
     }
 
-    /* ENTER */
-
     else if(key === "Enter"){
 
         event.preventDefault();
@@ -243,8 +244,6 @@ document.addEventListener("keydown", (event) => {
 
     }
 
-    /* BACKSPACE */
-
     else if(key === "Backspace"){
 
         event.preventDefault();
@@ -252,8 +251,6 @@ document.addEventListener("keydown", (event) => {
         screen.value = screen.value.slice(0, -1);
 
     }
-
-    /* ESCAPE */
 
     else if(key === "Escape"){
 
@@ -273,40 +270,50 @@ scientificButtons.forEach(button => {
 
         const value = button.textContent;
 
+        const expression = screen.value;
+
         try{
 
             switch(value){
 
                 case "sin":
                     screen.value = Math.sin(eval(screen.value));
+                    addToHistory(expression, screen.value);
                     break;
 
                 case "cos":
                     screen.value = Math.cos(eval(screen.value));
+                    addToHistory(expression, screen.value);
                     break;
 
                 case "tan":
                     screen.value = Math.tan(eval(screen.value));
+                    addToHistory(expression, screen.value);
                     break;
 
                 case "asin":
                     screen.value = Math.asin(eval(screen.value));
+                    addToHistory(expression, screen.value);
                     break;
 
                 case "acos":
                     screen.value = Math.acos(eval(screen.value));
+                    addToHistory(expression, screen.value);
                     break;
 
                 case "atan":
                     screen.value = Math.atan(eval(screen.value));
+                    addToHistory(expression, screen.value);
                     break;
 
                 case "log":
                     screen.value = Math.log10(eval(screen.value));
+                    addToHistory(expression, screen.value);
                     break;
 
                 case "ln":
                     screen.value = Math.log(eval(screen.value));
+                    addToHistory(expression, screen.value);
                     break;
 
                 case "π":
@@ -319,14 +326,17 @@ scientificButtons.forEach(button => {
 
                 case "√":
                     screen.value = Math.sqrt(eval(screen.value));
+                    addToHistory(expression, screen.value);
                     break;
 
                 case "x²":
                     screen.value = Math.pow(eval(screen.value), 2);
+                    addToHistory(expression, screen.value);
                     break;
 
                 case "x³":
                     screen.value = Math.pow(eval(screen.value), 3);
+                    addToHistory(expression, screen.value);
                     break;
 
                 case "^":
@@ -344,6 +354,8 @@ scientificButtons.forEach(button => {
 
                     screen.value = result;
 
+                    addToHistory(expression, screen.value);
+
                     break;
 
                 case "(":
@@ -356,10 +368,12 @@ scientificButtons.forEach(button => {
 
                 case "|x|":
                     screen.value = Math.abs(eval(screen.value));
+                    addToHistory(expression, screen.value);
                     break;
 
                 case "1/x":
                     screen.value = 1 / eval(screen.value);
+                    addToHistory(expression, screen.value);
                     break;
 
                 case "EXP":

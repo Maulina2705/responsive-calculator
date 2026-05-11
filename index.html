@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
     <title>Responsive Calculator</title>
 
@@ -13,6 +13,8 @@
 <body>
 
     <div class="calculator">
+
+        <!-- TOP BAR -->
 
         <div class="top-bar">
 
@@ -24,9 +26,13 @@
 
         </div>
 
+        <!-- DISPLAY -->
+
         <div class="display">
             <input type="text" id="screen" readonly>
         </div>
+
+        <!-- MODE SWITCH -->
 
         <div class="mode-switch">
 
@@ -40,21 +46,7 @@
 
         </div>
 
-        <div class="history-panel">
-
-            <div class="history-header">
-                <h3>History</h3>
-
-                <button id="clearHistory">
-                    Clear
-                </button>
-            </div>
-
-            <div class="history-list">
-
-            </div>
-
-        </div>
+        <!-- BODY -->
 
         <div class="calculator-body">
 
@@ -118,6 +110,26 @@
 
                 <button class="scientific">1/x</button>
                 <button class="scientific">EXP</button>
+
+            </div>
+
+            <!-- HISTORY -->
+
+            <div class="history-panel">
+
+                <div class="history-header">
+
+                    <h3>History</h3>
+
+                    <button id="clearHistory">
+                        Clear
+                    </button>
+
+                </div>
+
+                <div class="history-list">
+
+                </div>
 
             </div>
 
