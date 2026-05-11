@@ -986,25 +986,59 @@ scientificButtons.forEach(button => {
 
             case "a/b":
 
-                const currentValue =
-                    parseFloat(screen.textContent);
+                try {
 
-                if (!isNaN(currentValue)) {
+                    const expression =
+                        expressionDisplay.textContent;
+
+                    const formattedExpression =
+                        formatExpression(expression);
+
+                    const value = Function(
+
+                        "sin",
+                        "cos",
+                        "tan",
+                        "asin",
+                        "acos",
+                        "atan",
+                        "log",
+                        "ln",
+                        "sqrt",
+                        "abs",
+
+                        `return ${formattedExpression}`
+
+                    )(
+                        sin,
+                        cos,
+                        tan,
+                        asin,
+                        acos,
+                        atan,
+                        log,
+                        ln,
+                        sqrt,
+                        abs
+                    );
 
                     const fraction =
-                        decimalToFraction(currentValue);
+                        decimalToFraction(value);
 
                     screen.textContent = fraction;
 
                     addToHistory(
-                        `fraction(${currentValue})`,
+                        `fraction(${value})`,
                         fraction
                     );
+
+                } catch {
+
+                    screen.textContent = "Error";
 
                 }
 
                 break;
-
             /* PARENTHESIS */
 
             case "(":
