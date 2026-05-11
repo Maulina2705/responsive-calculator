@@ -22,6 +22,9 @@ const degBtn = document.getElementById("degBtn");
 const radBtn = document.getElementById("radBtn");
 
 let angleMode = "DEG";
+let lastOperator = "";
+let lastNumber = "";
+let justCalculated = false;
 
 /* =========================
    HISTORY
@@ -227,6 +230,17 @@ numberButtons.forEach(button => {
 
     button.addEventListener("click", () => {
 
+        /* Reset setelah hasil */
+
+        if(justCalculated){
+
+            screen.textContent = "";
+            expressionDisplay.textContent = "";
+
+            justCalculated = false;
+
+        }
+
         if(screen.textContent === "0"){
             screen.textContent = "";
         }
@@ -247,8 +261,15 @@ operatorButtons.forEach(button => {
 
     button.addEventListener("click", () => {
 
-        const lastChar =
-            expressionDisplay.textContent.slice(-1);
+        justCalculated = false;
+
+        const operator = button.textContent;
+
+        let expression = expressionDisplay.textContent;
+
+        const lastChar = expression.slice(-1);
+
+        /* Jika operator terakhir sudah ada */
 
         if(
             lastChar === "+" ||
@@ -257,12 +278,18 @@ operatorButtons.forEach(button => {
             lastChar === "/" ||
             lastChar === "%"
         ){
-            return;
+
+            expression = expression.slice(0, -1);
+
+            screen.textContent = screen.textContent.slice(0, -1);
+
         }
 
-        screen.textContent += button.textContent;
+        expression += operator;
 
-        expressionDisplay.textContent += button.textContent;
+        screen.textContent += operator;
+
+        expressionDisplay.textContent = expression;
 
     });
 
@@ -306,14 +333,36 @@ function calculate(){
 
     try{
 
-        const expression =
-            expressionDisplay.textContent;
+        let expression = expressionDisplay.textContent;
+
+        /* ENTER BERULANG */
+
+        if(justCalculated && lastOperator && lastNumber){
+
+            expression = `${screen.textContent}${lastOperator}${lastNumber}`;
+
+        }
+
+        /* Ambil operator terakhir */
+
+        const match = expression.match(/([+\-*/%])(\d+\.?\d*)$/);
+
+        if(match){
+
+            lastOperator = match[1];
+            lastNumber = match[2];
+
+        }
 
         const result = eval(expression);
 
         screen.textContent = result;
 
+        expressionDisplay.textContent = expression;
+
         addToHistory(expression, result);
+
+        justCalculated = true;
 
     }catch{
 
@@ -342,6 +391,15 @@ document.addEventListener("keydown", (event) => {
     const key = event.key;
 
     if(/[0-9]/.test(key)){
+
+        if(justCalculated){
+
+    screen.textContent = "";
+    expressionDisplay.textContent = "";
+
+    justCalculated = false;
+
+}
 
         if(screen.textContent === "0"){
             screen.textContent = "";
@@ -433,7 +491,7 @@ scientificButtons.forEach(button => {
                             toRadians(eval(expression))
                         );
 
-                    addToHistory(expression, screen.textContent);
+                    addToHistory(`sin(${expression})`, screen.textContent);
 
                     break;
 
@@ -444,7 +502,7 @@ scientificButtons.forEach(button => {
                             toRadians(eval(expression))
                         );
 
-                    addToHistory(expression, screen.textContent);
+                    addToHistory(`cos(${expression})`, screen.textContent);
 
                     break;
 
@@ -455,7 +513,7 @@ scientificButtons.forEach(button => {
                             toRadians(eval(expression))
                         );
 
-                    addToHistory(expression, screen.textContent);
+                    addToHistory(`tan(${expression})`, screen.textContent);
 
                     break;
 
@@ -497,7 +555,7 @@ scientificButtons.forEach(button => {
                     screen.textContent =
                         Math.log10(eval(expression));
 
-                    addToHistory(expression, screen.textContent);
+                    addToHistory(`log(${expression})`, screen.textContent);
 
                     break;
 
@@ -506,7 +564,7 @@ scientificButtons.forEach(button => {
                     screen.textContent =
                         Math.log(eval(expression));
 
-                    addToHistory(expression, screen.textContent);
+                    addToHistory(`ln(${expression})`, screen.textContent);
 
                     break;
 
@@ -529,7 +587,7 @@ scientificButtons.forEach(button => {
                     screen.textContent =
                         Math.sqrt(eval(expression));
 
-                    addToHistory(expression, screen.textContent);
+                    addToHistory(`√${expression}`, screen.textContent);
 
                     break;
 
@@ -538,7 +596,7 @@ scientificButtons.forEach(button => {
                     screen.textContent =
                         Math.pow(eval(expression), 2);
 
-                    addToHistory(expression, screen.textContent);
+                    addToHistory(`${expression}²`, screen.textContent);
 
                     break;
 
@@ -547,7 +605,7 @@ scientificButtons.forEach(button => {
                     screen.textContent =
                         Math.pow(eval(expression), 3);
 
-                    addToHistory(expression, screen.textContent);
+                    addToHistory(`${expression}³`, screen.textContent);
 
                     break;
 
@@ -570,7 +628,7 @@ scientificButtons.forEach(button => {
 
                     screen.textContent = result;
 
-                    addToHistory(expression, result);
+                    addToHistory(`${expression}!`, screen.textContent);
 
                     break;
 
@@ -593,7 +651,7 @@ scientificButtons.forEach(button => {
                     screen.textContent =
                         Math.abs(eval(expression));
 
-                    addToHistory(expression, screen.textContent);
+                    addToHistory(`|${expression}|`, screen.textContent);
 
                     break;
 
@@ -602,7 +660,7 @@ scientificButtons.forEach(button => {
                     screen.textContent =
                         1 / eval(expression);
 
-                    addToHistory(expression, screen.textContent);
+                    addToHistory(`1/${expression}`, screen.textContent);
 
                     break;
 
