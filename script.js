@@ -484,7 +484,10 @@ numberButtons.forEach(button => {
 
     button.addEventListener("click", () => {
 
-        if (waitingForNewNumber) {
+        if (
+            waitingForNewNumber &&
+            value !== "a/b"
+        ) {
 
             updateScreen("");
 
