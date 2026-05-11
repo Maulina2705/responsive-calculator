@@ -37,6 +37,20 @@ const equalButton = document.querySelector(".equal");
 const scientificButtons = document.querySelectorAll(".scientific");
 
 /* =========================
+   LOAD SAVED THEME
+========================= */
+
+const savedTheme = localStorage.getItem("theme");
+
+if(savedTheme === "light"){
+
+    body.classList.add("light-mode");
+
+    themeToggle.textContent = "☀️";
+
+}
+
+/* =========================
    THEME TOGGLE
 ========================= */
 
@@ -44,10 +58,20 @@ themeToggle.addEventListener("click", () => {
 
     body.classList.toggle("light-mode");
 
+    /* SAVE THEME */
+
     if(body.classList.contains("light-mode")){
+
         themeToggle.textContent = "☀️";
+
+        localStorage.setItem("theme", "light");
+
     }else{
+
         themeToggle.textContent = "🌙";
+
+        localStorage.setItem("theme", "dark");
+
     }
 
 });
@@ -146,6 +170,27 @@ backspaceButton.addEventListener("click", () => {
    HISTORY FUNCTION
 ========================= */
 
+function saveHistory(){
+
+    localStorage.setItem(
+        "calculatorHistory",
+        historyList.innerHTML
+    );
+
+}
+
+function loadHistory(){
+
+    const savedHistory = localStorage.getItem("calculatorHistory");
+
+    if(savedHistory){
+
+        historyList.innerHTML = savedHistory;
+
+    }
+
+}
+
 function addToHistory(expression, result){
 
     const item = document.createElement("div");
@@ -155,6 +200,8 @@ function addToHistory(expression, result){
     item.textContent = `${expression} = ${result}`;
 
     historyList.prepend(item);
+
+    saveHistory();
 
 }
 
@@ -403,4 +450,12 @@ clearHistoryButton.addEventListener("click", () => {
 
     historyList.innerHTML = "";
 
+    localStorage.removeItem("calculatorHistory");
+
 });
+
+/* =========================
+   LOAD HISTORY
+========================= */
+
+loadHistory();
