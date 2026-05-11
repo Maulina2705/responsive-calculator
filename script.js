@@ -478,10 +478,7 @@ numberButtons.forEach(button => {
 
     button.addEventListener("click", () => {
 
-        if (
-            waitingForNewNumber &&
-            value !== "a/b"
-        ) {
+        if (waitingForNewNumber) {
 
             updateScreen("");
 
@@ -722,10 +719,7 @@ document.addEventListener("keydown", (event) => {
 
     if (/[0-9]/.test(key)) {
 
-        if (
-            waitingForNewNumber &&
-            value !== "a/b"
-        ) {
+        if (waitingForNewNumber) {
 
             updateScreen("");
 
@@ -858,7 +852,10 @@ scientificButtons.forEach(button => {
         const value =
             button.textContent;
 
-        if (waitingForNewNumber) {
+        if (
+            waitingForNewNumber &&
+            value !== "a/b"
+        ) {
 
             updateScreen("");
 
@@ -1079,20 +1076,29 @@ scientificButtons.forEach(button => {
                     const fraction =
                         decimalToFraction(cleanValue);
 
-                    renderFraction(fraction);
+                    const parts =
+                        fraction.split("/");
 
-                    expressionDisplay.innerHTML = `
+                    if (parts.length !== 2) {
+
+                        updateScreen(fraction);
+
+                        break;
+
+                    }
+
+                    screen.innerHTML = `
 
             <span class="pretty-fraction">
 
                 <sup>
-                    ${fraction.split("/")[0]}
+                    ${parts[0]}
                 </sup>
 
                 <span class="fraction-line"></span>
 
                 <sub>
-                    ${fraction.split("/")[1]}
+                    ${parts[1]}
                 </sub>
 
             </span>
