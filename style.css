@@ -392,3 +392,49 @@ button:hover {
 .fraction .bottom {
     padding: 0 12px;
 }
+
+/* =========================
+   PRETTY FRACTION
+========================= */
+
+.pretty-fraction{
+
+    display:inline-flex;
+
+    flex-direction:column;
+
+    align-items:center;
+
+    justify-content:center;
+
+    font-size:3rem;
+
+    font-weight:bold;
+
+    line-height:1;
+
+}
+
+.pretty-fraction sup{
+
+    font-size:1.8rem;
+
+}
+
+.pretty-fraction sub{
+
+    font-size:1.8rem;
+
+}
+
+.fraction-line{
+
+    width:60px;
+
+    height:4px;
+
+    background:black;
+
+    margin:4px 0;
+
+}

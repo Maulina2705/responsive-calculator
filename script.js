@@ -439,15 +439,11 @@ function decimalToFraction(decimal) {
 
 }
 
-/* =========================
-   RENDER FRACTION
-========================= */
-
-function renderFraction(fraction) {
+function renderFraction(fraction){
 
     const parts = fraction.split("/");
 
-    if (parts.length !== 2) {
+    if(parts.length !== 2){
 
         updateScreen(fraction);
 
@@ -460,17 +456,15 @@ function renderFraction(fraction) {
 
     updateScreen(`
 
-        <div class="fraction">
+        <span class="pretty-fraction">
 
-            <span class="top">
-                ${numerator}
-            </span>
+            <sup>${numerator}</sup>
 
-            <span class="bottom">
-                ${denominator}
-            </span>
+            <span class="fraction-line"></span>
 
-        </div>
+            <sub>${denominator}</sub>
+
+        </span>
 
     `);
 
