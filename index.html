@@ -1,86 +1,100 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Responsive Calculator</title>
 
-  <link rel="stylesheet" href="style.css">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Responsive Calculator</title>
+
+    <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
-  <div class="calculator">
+    <div class="calculator">
 
-    <div class="top-bar">
-      <h2>Calculator</h2>
+        <div class="top-bar">
+            <h2>Calculator</h2>
 
-      <button id="themeToggle">
-        🌙
-      </button>
+            <button id="themeToggle">
+                🌙
+            </button>
+        </div>
+
+        <div class="display">
+            <input type="text" id="screen" readonly>
+        </div>
+
+        <div class="mode-switch">
+            <button id="standardBtn" class="active">
+                Standard
+            </button>
+
+            <button id="scientificBtn">
+                Scientific
+            </button>
+        </div>
+
+        <div class="buttons standard-mode">
+
+            <button>C</button>
+            <button>⌫</button>
+            <button>%</button>
+            <button>/</button>
+
+            <button>7</button>
+            <button>8</button>
+            <button>9</button>
+            <button>*</button>
+
+            <button>4</button>
+            <button>5</button>
+            <button>6</button>
+            <button>-</button>
+
+            <button>1</button>
+            <button>2</button>
+            <button>3</button>
+            <button>+</button>
+
+            <button>0</button>
+            <button>.</button>
+            <button class="equal">=</button>
+
+        </div>
+
+        <div class="buttons scientific-mode hidden">
+
+            <button>sin</button>
+            <button>cos</button>
+            <button>tan</button>
+            <button>asin</button>
+            <button>acos</button>
+
+            <button>atan</button>
+            <button>log</button>
+            <button>ln</button>
+            <button>π</button>
+            <button>e</button>
+
+            <button>√</button>
+            <button>x²</button>
+            <button>x³</button>
+            <button>^</button>
+            <button>!</button>
+
+            <button>(</button>
+            <button>)</button>
+            <button>|x|</button>
+            <button>1/x</button>
+            <button>EXP</button>
+
+        </div>
+
     </div>
 
-    <div class="display">
-      <input type="text" id="screen" readonly>
-    </div>
-
-    <div class="mode-switch">
-      <button id="standardBtn" class="active">
-        Standard
-      </button>
-
-      <button id="scientificBtn">
-        Scientific
-      </button>
-    </div>
-
-    <div class="buttons standard-mode">
-
-      <button>C</button>
-      <button>⌫</button>
-      <button>%</button>
-      <button>/</button>
-
-      <button>7</button>
-      <button>8</button>
-      <button>9</button>
-      <button>*</button>
-
-      <button>4</button>
-      <button>5</button>
-      <button>6</button>
-      <button>-</button>
-
-      <button>1</button>
-      <button>2</button>
-      <button>3</button>
-      <button>+</button>
-
-      <button>0</button>
-      <button>.</button>
-      <button class="equal">=</button>
-
-    </div>
-
-    <div class="buttons scientific-mode hidden">
-
-      <button>sin</button>
-      <button>cos</button>
-      <button>tan</button>
-      <button>√</button>
-
-      <button>log</button>
-      <button>π</button>
-      <button>^</button>
-      <button>(</button>
-
-      <button>)</button>
-      <button>!</button>
-
-    </div>
-
-  </div>
-
-  <script src="script.js"></script>
+    <script src="script.js"></script>
 
 </body>
+
 </html>

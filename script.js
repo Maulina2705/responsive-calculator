@@ -5,33 +5,38 @@ const standardBtn = document.getElementById("standardBtn");
 const scientificBtn = document.getElementById("scientificBtn");
 
 const scientificMode = document.querySelector(".scientific-mode");
+const calculator = document.querySelector(".calculator");
 
 themeToggle.addEventListener("click", () => {
 
-  body.classList.toggle("light-mode");
+    body.classList.toggle("light-mode");
 
-  if(body.classList.contains("light-mode")){
-    themeToggle.textContent = "☀️";
-  }else{
-    themeToggle.textContent = "🌙";
-  }
+    if (body.classList.contains("light-mode")) {
+        themeToggle.textContent = "☀️";
+    } else {
+        themeToggle.textContent = "🌙";
+    }
 
 });
 
 scientificBtn.addEventListener("click", () => {
 
-  scientificMode.classList.remove("hidden");
+    scientificMode.classList.remove("hidden");
 
-  scientificBtn.classList.add("active");
-  standardBtn.classList.remove("active");
+    scientificBtn.classList.add("active");
+    standardBtn.classList.remove("active");
+
+    calculator.classList.add("scientific-layout");
 
 });
 
 standardBtn.addEventListener("click", () => {
 
-  scientificMode.classList.add("hidden");
+    scientificMode.classList.add("hidden");
 
-  standardBtn.classList.add("active");
-  scientificBtn.classList.remove("active");
+    standardBtn.classList.add("active");
+    scientificBtn.classList.remove("active");
+
+    calculator.classList.remove("scientific-layout");
 
 });
