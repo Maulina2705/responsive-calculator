@@ -526,8 +526,33 @@ function calculate() {
         const formattedExpression =
             formatExpression(expression);
 
-        const result =
-            eval(formattedExpression);
+        const result = Function(
+
+            "sin",
+            "cos",
+            "tan",
+            "asin",
+            "acos",
+            "atan",
+            "log",
+            "ln",
+            "sqrt",
+            "abs",
+
+            `return ${formattedExpression}`
+
+        )(
+            sin,
+            cos,
+            tan,
+            asin,
+            acos,
+            atan,
+            log,
+            ln,
+            sqrt,
+            abs
+        );
 
         screen.textContent = result;
 
