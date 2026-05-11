@@ -79,6 +79,10 @@ body {
     font-size: 1rem;
 }
 
+.mode-switch button{
+    font-weight:bold;
+}
+
 .active {
     background: #4f46e5;
     color: white;
@@ -97,6 +101,7 @@ body {
     flex: 1;
     display: grid;
     grid-template-columns: repeat(4, 1fr);
+    grid-template-rows:repeat(5,1fr);
     gap: 10px;
 }
 
@@ -112,7 +117,7 @@ body {
 /* BUTTON */
 
 button {
-    height: 60px;
+    min-height:60px;
     border: none;
     border-radius: 15px;
     font-size: 1rem;
@@ -128,6 +133,10 @@ button:hover {
     grid-column: span 2;
     background: #4f46e5;
     color: white;
+}
+
+.standard-mode .equal{
+    height:100%;
 }
 
 /* HIDDEN */
