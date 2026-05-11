@@ -167,15 +167,61 @@ backspaceButton.addEventListener("click", () => {
 });
 
 /* =========================
-   HISTORY FUNCTION
+   HISTORY FUNCTIONS
 ========================= */
 
 function saveHistory(){
 
+    const items = [];
+
+    document.querySelectorAll(".history-item").forEach(item => {
+
+        items.push(item.textContent);
+
+    });
+
     localStorage.setItem(
         "calculatorHistory",
-        historyList.innerHTML
+        JSON.stringify(items)
     );
+
+}
+
+function loadHistory(){
+
+    const savedHistory = JSON.parse(
+        localStorage.getItem("calculatorHistory")
+    );
+
+    if(savedHistory){
+
+        savedHistory.forEach(history => {
+
+            const item = document.createElement("div");
+
+            item.classList.add("history-item");
+
+            item.textContent = history;
+
+            historyList.appendChild(item);
+
+        });
+
+    }
+
+}
+
+function addToHistory(expression, result){
+
+    const item = document.createElement("div");
+
+    item.classList.add("history-item");
+
+    item.textContent = `${expression} = ${result}`;
+
+    historyList.prepend(item);
+
+    saveHistory();
 
 }
 
