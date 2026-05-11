@@ -439,11 +439,11 @@ function decimalToFraction(decimal) {
 
 }
 
-function renderFraction(fraction){
+function renderFraction(fraction) {
 
     const parts = fraction.split("/");
 
-    if(parts.length !== 2){
+    if (parts.length !== 2) {
 
         updateScreen(fraction);
 
@@ -1073,22 +1073,23 @@ scientificButtons.forEach(button => {
 
                 try {
 
+                    const currentValue =
+                        parseFloat(screen.innerText);
+
+                    if (isNaN(currentValue)) return;
+
+                    const cleanValue =
+                        Number(currentValue.toFixed(10));
+
                     const fraction =
-                        decimalToFraction(
-                            lastAnswer
-                        );
+                        decimalToFraction(cleanValue);
 
                     renderFraction(fraction);
 
-                    expressionDisplay.textContent =
-                        fraction;
-
                     addToHistory(
-                        `${lastAnswer}`,
+                        cleanValue,
                         fraction
                     );
-
-                    justCalculated = true;
 
                 } catch {
 
