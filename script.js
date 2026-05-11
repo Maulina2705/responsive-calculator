@@ -712,6 +712,18 @@ scientificButtons.forEach(button => {
 
         }
 
+        /* Hapus 0 awal */
+
+        if (
+            expressionDisplay.textContent === "0" ||
+            expressionDisplay.textContent === ""
+        ) {
+
+            expressionDisplay.textContent = "";
+            screen.textContent = "";
+
+        }
+
         switch (value) {
 
             /* TRIG */
