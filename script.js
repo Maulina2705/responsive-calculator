@@ -404,16 +404,23 @@ document.addEventListener("keydown", (event) => {
 
     const key = event.key;
 
+    /* =========================
+       NUMBER
+    ========================= */
+
     if(/[0-9]/.test(key)){
 
-        if(justCalculated){
+        /* Restart setelah hasil */
 
-    screen.textContent = "";
-    expressionDisplay.textContent = "";
+        if(waitingForNewNumber){
 
-    justCalculated = false;
+            screen.textContent = "";
+            expressionDisplay.textContent = "";
 
-}
+            waitingForNewNumber = false;
+            justCalculated = false;
+
+        }
 
         if(screen.textContent === "0"){
             screen.textContent = "";
@@ -425,6 +432,10 @@ document.addEventListener("keydown", (event) => {
 
     }
 
+    /* =========================
+       DECIMAL
+    ========================= */
+
     else if(key === "."){
 
         screen.textContent += key;
@@ -432,6 +443,10 @@ document.addEventListener("keydown", (event) => {
         expressionDisplay.textContent += key;
 
     }
+
+    /* =========================
+       OPERATOR
+    ========================= */
 
     else if(
         key === "+" ||
@@ -441,11 +456,51 @@ document.addEventListener("keydown", (event) => {
         key === "%"
     ){
 
-        screen.textContent += key;
+        let expression = expressionDisplay.textContent;
 
-        expressionDisplay.textContent += key;
+        /* Jika habis calculate */
+
+        if(justCalculated){
+
+            expression = screen.textContent;
+
+            expressionDisplay.textContent = expression;
+
+            justCalculated = false;
+        }
+
+        waitingForNewNumber = false;
+
+        const lastChar = expression.slice(-1);
+
+        /* Replace operator */
+
+        if(
+            lastChar === "+" ||
+            lastChar === "-" ||
+            lastChar === "*" ||
+            lastChar === "/" ||
+            lastChar === "%"
+        ){
+
+            expression = expression.slice(0, -1);
+
+            screen.textContent =
+                screen.textContent.slice(0, -1);
+
+        }
+
+        expression += key;
+
+        expressionDisplay.textContent = expression;
+
+        screen.textContent = expression;
 
     }
+
+    /* =========================
+       ENTER
+    ========================= */
 
     else if(key === "Enter"){
 
@@ -454,6 +509,10 @@ document.addEventListener("keydown", (event) => {
         calculate();
 
     }
+
+    /* =========================
+       BACKSPACE
+    ========================= */
 
     else if(key === "Backspace"){
 
@@ -470,6 +529,10 @@ document.addEventListener("keydown", (event) => {
         }
 
     }
+
+    /* =========================
+       ESCAPE
+    ========================= */
 
     else if(key === "Escape"){
 
