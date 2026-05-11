@@ -1,42 +1,75 @@
-const themeToggle = document.getElementById("themeToggle");
-const body = document.body;
+const screen = document.getElementById("screen");
 
-const standardBtn = document.getElementById("standardBtn");
-const scientificBtn = document.getElementById("scientificBtn");
+const numberButtons = document.querySelectorAll(".number");
+const operatorButtons = document.querySelectorAll(".operator");
 
-const scientificMode = document.querySelector(".scientific-mode");
-const calculator = document.querySelector(".calculator");
+const clearButton = document.querySelector(".clear");
+const backspaceButton = document.querySelector(".backspace");
 
-themeToggle.addEventListener("click", () => {
+const equalButton = document.querySelector(".equal");
 
-    body.classList.toggle("light-mode");
+/* =========================
+   NUMBER BUTTON
+========================= */
 
-    if (body.classList.contains("light-mode")) {
-        themeToggle.textContent = "☀️";
-    } else {
-        themeToggle.textContent = "🌙";
+numberButtons.forEach(button => {
+
+    button.addEventListener("click", () => {
+
+        screen.value += button.textContent;
+
+    });
+
+});
+
+/* =========================
+   OPERATOR BUTTON
+========================= */
+
+operatorButtons.forEach(button => {
+
+    button.addEventListener("click", () => {
+
+        screen.value += button.textContent;
+
+    });
+
+});
+
+/* =========================
+   CLEAR BUTTON
+========================= */
+
+clearButton.addEventListener("click", () => {
+
+    screen.value = "";
+
+});
+
+/* =========================
+   BACKSPACE BUTTON
+========================= */
+
+backspaceButton.addEventListener("click", () => {
+
+    screen.value = screen.value.slice(0, -1);
+
+});
+
+/* =========================
+   EQUAL BUTTON
+========================= */
+
+equalButton.addEventListener("click", () => {
+
+    try{
+
+        screen.value = eval(screen.value);
+
+    }catch{
+
+        screen.value = "Error";
+
     }
-
-});
-
-scientificBtn.addEventListener("click", () => {
-
-    scientificMode.classList.remove("hidden");
-
-    scientificBtn.classList.add("active");
-    standardBtn.classList.remove("active");
-
-    calculator.classList.add("scientific-layout");
-
-});
-
-standardBtn.addEventListener("click", () => {
-
-    scientificMode.classList.add("hidden");
-
-    standardBtn.classList.add("active");
-    scientificBtn.classList.remove("active");
-
-    calculator.classList.remove("scientific-layout");
 
 });
