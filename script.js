@@ -1,4 +1,5 @@
 const screen = document.getElementById("screen");
+const expressionDisplay = document.getElementById("expression");
 
 /* =========================
    MODE & THEME
@@ -145,7 +146,9 @@ numberButtons.forEach(button => {
 
     button.addEventListener("click", () => {
 
-        screen.value += button.textContent;
+        screen.textContent += button.textContent;
+
+        expressionDisplay.textContent += button.textContent;
 
     });
 
@@ -159,7 +162,7 @@ operatorButtons.forEach(button => {
 
     button.addEventListener("click", () => {
 
-        const lastChar = screen.value.slice(-1);
+        const lastChar = screen.textContent.slice(-1);
 
         if (
             lastChar === "+" ||
@@ -171,7 +174,9 @@ operatorButtons.forEach(button => {
             return;
         }
 
-        screen.value += button.textContent;
+        screen.textContent += button.textContent;
+
+        expressionDisplay.textContent += button.textContent;
 
     });
 
@@ -183,7 +188,9 @@ operatorButtons.forEach(button => {
 
 clearButton.addEventListener("click", () => {
 
-    screen.value = "";
+    screen.textContent = "0";
+
+    expressionDisplay.textContent = "";
 
 });
 
@@ -193,7 +200,14 @@ clearButton.addEventListener("click", () => {
 
 backspaceButton.addEventListener("click", () => {
 
-    screen.value = screen.value.slice(0, -1);
+    screen.textContent = screen.textContent.slice(0, -1);
+
+    expressionDisplay.textContent =
+        expressionDisplay.textContent.slice(0, -1);
+
+    if (screen.textContent === "") {
+        screen.textContent = "0";
+    }
 
 });
 
@@ -290,17 +304,17 @@ function calculate() {
 
     try {
 
-        const expression = screen.value;
+        const expression = expressionDisplay.textContent;
 
         const result = eval(expression);
 
-        screen.value = result;
+        screen.textContent = result;
 
         addToHistory(expression, result);
 
     } catch {
 
-        screen.value = "Error";
+        screen.textContent = "Error";
 
     }
 
@@ -326,13 +340,13 @@ document.addEventListener("keydown", (event) => {
 
     if (/[0-9]/.test(key)) {
 
-        screen.value += key;
+        screen.textContent += key;
 
     }
 
     else if (key === ".") {
 
-        screen.value += key;
+        screen.textContent += key;
 
     }
 
@@ -344,7 +358,7 @@ document.addEventListener("keydown", (event) => {
         key === "%"
     ) {
 
-        const lastChar = screen.value.slice(-1);
+        const lastChar = screen.textContent.slice(-1);
 
         if (
             lastChar === "+" ||
@@ -356,7 +370,7 @@ document.addEventListener("keydown", (event) => {
             return;
         }
 
-        screen.value += key;
+        screen.textContent += key;
 
     }
 
@@ -372,13 +386,13 @@ document.addEventListener("keydown", (event) => {
 
         event.preventDefault();
 
-        screen.value = screen.value.slice(0, -1);
+        screen.textContent = screen.textContent.slice(0, -1);
 
     }
 
     else if (key === "Escape") {
 
-        screen.value = "";
+        screen.textContent = "";
 
     }
 
@@ -422,7 +436,7 @@ scientificButtons.forEach(button => {
 
         const value = button.textContent;
 
-        const expression = screen.value;
+        const expression = screen.textContent;
 
         try {
 
@@ -430,136 +444,136 @@ scientificButtons.forEach(button => {
 
                 case "sin":
 
-                    screen.value = Math.sin(
-                        toRadians(eval(screen.value))
+                    screen.textContent = Math.sin(
+                        toRadians(eval(screen.textContent))
                     );
 
-                    addToHistory(expression, screen.value);
+                    addToHistory(expression, screen.textContent);
 
                     break;
 
                 case "cos":
 
-                    screen.value = Math.cos(
-                        toRadians(eval(screen.value))
+                    screen.textContent = Math.cos(
+                        toRadians(eval(screen.textContent))
                     );
 
-                    addToHistory(expression, screen.value);
+                    addToHistory(expression, screen.textContent);
 
                     break;
 
                 case "tan":
 
-                    screen.value = Math.tan(
-                        toRadians(eval(screen.value))
+                    screen.textContent = Math.tan(
+                        toRadians(eval(screen.textContent))
                     );
 
-                    addToHistory(expression, screen.value);
+                    addToHistory(expression, screen.textContent);
 
                     break;
 
                 case "asin":
 
-                    screen.value = fromRadians(
-                        Math.asin(eval(screen.value))
+                    screen.textContent = fromRadians(
+                        Math.asin(eval(screen.textContent))
                     );
 
-                    addToHistory(expression, screen.value);
+                    addToHistory(expression, screen.textContent);
 
                     break;
 
                 case "acos":
 
-                    screen.value = fromRadians(
-                        Math.acos(eval(screen.value))
+                    screen.textContent = fromRadians(
+                        Math.acos(eval(screen.textContent))
                     );
 
-                    addToHistory(expression, screen.value);
+                    addToHistory(expression, screen.textContent);
 
                     break;
 
                 case "atan":
 
-                    screen.value = fromRadians(
-                        Math.atan(eval(screen.value))
+                    screen.textContent = fromRadians(
+                        Math.atan(eval(screen.textContent))
                     );
 
-                    addToHistory(expression, screen.value);
+                    addToHistory(expression, screen.textContent);
 
                     break;
 
                 case "log":
-                    screen.value = Math.log10(eval(screen.value));
-                    addToHistory(expression, screen.value);
+                    screen.textContent = Math.log10(eval(screen.textContent));
+                    addToHistory(expression, screen.textContent);
                     break;
 
                 case "ln":
-                    screen.value = Math.log(eval(screen.value));
-                    addToHistory(expression, screen.value);
+                    screen.textContent = Math.log(eval(screen.textContent));
+                    addToHistory(expression, screen.textContent);
                     break;
 
                 case "π":
-                    screen.value += Math.PI;
+                    screen.textContent += Math.PI;
                     break;
 
                 case "e":
-                    screen.value += Math.E;
+                    screen.textContent += Math.E;
                     break;
 
                 case "√":
-                    screen.value = Math.sqrt(eval(screen.value));
-                    addToHistory(expression, screen.value);
+                    screen.textContent = Math.sqrt(eval(screen.textContent));
+                    addToHistory(expression, screen.textContent);
                     break;
 
                 case "x²":
-                    screen.value = Math.pow(eval(screen.value), 2);
-                    addToHistory(expression, screen.value);
+                    screen.textContent = Math.pow(eval(screen.textContent), 2);
+                    addToHistory(expression, screen.textContent);
                     break;
 
                 case "x³":
-                    screen.value = Math.pow(eval(screen.value), 3);
-                    addToHistory(expression, screen.value);
+                    screen.textContent = Math.pow(eval(screen.textContent), 3);
+                    addToHistory(expression, screen.textContent);
                     break;
 
                 case "^":
-                    screen.value += "**";
+                    screen.textContent += "**";
                     break;
 
                 case "!":
 
-                    let num = eval(screen.value);
+                    let num = eval(screen.textContent);
                     let result = 1;
 
                     for (let i = 1; i <= num; i++) {
                         result *= i;
                     }
 
-                    screen.value = result;
+                    screen.textContent = result;
 
-                    addToHistory(expression, screen.value);
+                    addToHistory(expression, screen.textContent);
 
                     break;
 
                 case "(":
-                    screen.value += "(";
+                    screen.textContent += "(";
                     break;
 
                 case ")":
-                    screen.value += ")";
+                    screen.textContent += ")";
                     break;
 
                 case "|x|":
-                    screen.value = Math.abs(eval(screen.value));
-                    addToHistory(expression, screen.value);
+                    screen.textContent = Math.abs(eval(screen.textContent));
+                    addToHistory(expression, screen.textContent);
                     break;
 
                 case "1/x":
-                    screen.value = 1 / eval(screen.value);
-                    addToHistory(expression, screen.value);
+                    screen.textContent = 1 / eval(screen.textContent);
+                    addToHistory(expression, screen.textContent);
                     break;
 
                 case "EXP":
-                    screen.value += "e";
+                    screen.textContent += "e";
                     break;
 
                 default:
@@ -569,7 +583,7 @@ scientificButtons.forEach(button => {
 
         } catch {
 
-            screen.value = "Error";
+            screen.textContent = "Error";
 
         }
 
