@@ -1091,19 +1091,25 @@ scientificButtons.forEach(button => {
 
                 screen.innerHTML = `
 
-        <div class="fraction">
+    <div class="fraction">
+
+        <span class="whole"></span>
+
+        <div class="fraction-stack">
 
             <span class="top">
-                1
+                ${parts[0]}
             </span>
 
             <span class="bottom">
-                2
+                ${parts[1]}
             </span>
 
         </div>
 
-    `;
+    </div>
+
+`;
 
                 break;
 
