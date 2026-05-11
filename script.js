@@ -1068,55 +1068,23 @@ scientificButtons.forEach(button => {
 
             case "a/b":
 
-                try {
+    screen.innerHTML = `
 
-                    const cleanValue =
-                        Number(lastAnswer.toFixed(10));
+        <div class="fraction">
 
-                    const fraction =
-                        decimalToFraction(cleanValue);
-
-                    const parts =
-                        fraction.split("/");
-
-                    if (parts.length !== 2) {
-
-                        updateScreen(fraction);
-
-                        break;
-
-                    }
-
-                    screen.innerHTML = `
-
-            <span class="pretty-fraction">
-
-                <sup>
-                    ${parts[0]}
-                </sup>
-
-                <span class="fraction-line"></span>
-
-                <sub>
-                    ${parts[1]}
-                </sub>
-
+            <span class="top">
+                1
             </span>
 
-        `;
+            <span class="bottom">
+                2
+            </span>
 
-                    addToHistory(
-                        cleanValue,
-                        fraction
-                    );
+        </div>
 
-                } catch {
+    `;
 
-                    updateScreen("Error");
-
-                }
-
-                break;
+    break;
 
             case "(":
 

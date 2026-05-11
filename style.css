@@ -369,28 +369,46 @@ button:hover {
 
 }
 
-/* FRACTION DISPLAY */
+/* =========================
+   FRACTION DISPLAY
+========================= */
 
-.fraction {
+.fraction{
 
-    display: inline-flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    font-size: 3rem;
-    font-weight: bold;
-    line-height: 1;
-    color: black;
-    min-width: 70px;
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;
+
+    justify-content:center;
+
+    width:100%;
+
+    font-size:3rem;
+
+    font-weight:bold;
+
+    color:black;
+
 }
 
-.fraction .top {
-    border-bottom: 4px solid black;
-    padding: 0 12px;
+.fraction .top{
+
+    border-bottom:4px solid black;
+
+    padding:0 20px;
+
+    line-height:1.2;
+
 }
 
-.fraction .bottom {
-    padding: 0 12px;
+.fraction .bottom{
+
+    padding:0 20px;
+
+    line-height:1.2;
+
 }
 
 /* =========================
