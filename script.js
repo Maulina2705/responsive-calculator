@@ -56,7 +56,7 @@ const scientificButtons = document.querySelectorAll(".scientific");
 
 const savedTheme = localStorage.getItem("theme");
 
-if(savedTheme === "light"){
+if (savedTheme === "light") {
 
     body.classList.add("light-mode");
 
@@ -72,13 +72,13 @@ themeToggle.addEventListener("click", () => {
 
     body.classList.toggle("light-mode");
 
-    if(body.classList.contains("light-mode")){
+    if (body.classList.contains("light-mode")) {
 
         themeToggle.textContent = "☀️";
 
         localStorage.setItem("theme", "light");
 
-    }else{
+    } else {
 
         themeToggle.textContent = "🌙";
 
@@ -144,7 +144,7 @@ radBtn.addEventListener("click", () => {
    HISTORY FUNCTIONS
 ========================= */
 
-function saveHistory(){
+function saveHistory() {
 
     const items = [];
 
@@ -161,13 +161,13 @@ function saveHistory(){
 
 }
 
-function loadHistory(){
+function loadHistory() {
 
     const savedHistory = JSON.parse(
         localStorage.getItem("calculatorHistory")
     );
 
-    if(savedHistory){
+    if (savedHistory) {
 
         savedHistory.forEach(history => {
 
@@ -185,7 +185,7 @@ function loadHistory(){
 
 }
 
-function addToHistory(expression, result){
+function addToHistory(expression, result) {
 
     const item = document.createElement("div");
 
@@ -203,9 +203,9 @@ function addToHistory(expression, result){
    ANGLE CONVERSION
 ========================= */
 
-function toRadians(value){
+function toRadians(value) {
 
-    if(angleMode === "DEG"){
+    if (angleMode === "DEG") {
         return value * (Math.PI / 180);
     }
 
@@ -213,9 +213,9 @@ function toRadians(value){
 
 }
 
-function fromRadians(value){
+function fromRadians(value) {
 
-    if(angleMode === "DEG"){
+    if (angleMode === "DEG") {
         return value * (180 / Math.PI);
     }
 
@@ -233,7 +233,7 @@ numberButtons.forEach(button => {
 
         /* Setelah hasil keluar */
 
-        if(waitingForNewNumber){
+        if (waitingForNewNumber) {
 
             screen.textContent = "";
             expressionDisplay.textContent = "";
@@ -243,7 +243,7 @@ numberButtons.forEach(button => {
 
         }
 
-        if(screen.textContent === "0"){
+        if (screen.textContent === "0") {
             screen.textContent = "";
         }
 
@@ -269,7 +269,7 @@ operatorButtons.forEach(button => {
 
         /* Jika habis calculate */
 
-        if(justCalculated){
+        if (justCalculated) {
 
             expression = screen.textContent;
 
@@ -284,13 +284,13 @@ operatorButtons.forEach(button => {
 
         /* Replace operator */
 
-        if(
+        if (
             lastChar === "+" ||
             lastChar === "-" ||
             lastChar === "*" ||
             lastChar === "/" ||
             lastChar === "%"
-        ){
+        ) {
 
             expression = expression.slice(0, -1);
 
@@ -332,25 +332,69 @@ backspaceButton.addEventListener("click", () => {
     expressionDisplay.textContent =
         expressionDisplay.textContent.slice(0, -1);
 
-    if(screen.textContent === ""){
+    if (screen.textContent === "") {
         screen.textContent = "0";
     }
 
 });
 
 /* =========================
+   FORMAT EXPRESSION
+========================= */
+
+function formatExpression(expression) {
+
+    expression = expression.replace(
+        /(\d+)!/g,
+        (_, n) => {
+
+            let result = 1;
+
+            for (let i = 1; i <= n; i++) {
+                result *= i;
+            }
+
+            return result;
+        }
+    );
+
+    return expression
+
+        .replace(/sin\(/g, "Math.sin(toRadians(")
+        .replace(/cos\(/g, "Math.cos(toRadians(")
+        .replace(/tan\(/g, "Math.tan(toRadians(")
+
+        .replace(/asin\(/g, "fromRadians(Math.asin(")
+        .replace(/acos\(/g, "fromRadians(Math.acos(")
+        .replace(/atan\(/g, "fromRadians(Math.atan(")
+
+        .replace(/log\(/g, "Math.log10(")
+        .replace(/ln\(/g, "Math.log(")
+
+        .replace(/√\(/g, "Math.sqrt(")
+
+        .replace(/abs\(/g, "Math.abs(")
+
+        .replace(/π/g, "Math.PI")
+        .replace(/\be\b/g, "Math.E")
+
+        .replace(/\^/g, "**");
+
+}
+
+/* =========================
    CALCULATE
 ========================= */
 
-function calculate(){
+function calculate() {
 
-    try{
+    try {
 
         let expression = expressionDisplay.textContent;
 
         /* ENTER BERULANG */
 
-        if(justCalculated && lastOperator && lastNumber){
+        if (justCalculated && lastOperator && lastNumber) {
 
             expression = `${screen.textContent}${lastOperator}${lastNumber}`;
 
@@ -360,14 +404,17 @@ function calculate(){
 
         const match = expression.match(/([+\-*/%])(\d+\.?\d*)$/);
 
-        if(match){
+        if (match) {
 
             lastOperator = match[1];
             lastNumber = match[2];
 
         }
 
-        const result = eval(expression);
+        const formattedExpression =
+            formatExpression(expression);
+
+        const result = eval(formattedExpression);
 
         screen.textContent = result;
 
@@ -378,7 +425,7 @@ function calculate(){
         justCalculated = true;
         waitingForNewNumber = true;
 
-    }catch{
+    } catch {
 
         screen.textContent = "Error";
 
@@ -408,11 +455,11 @@ document.addEventListener("keydown", (event) => {
        NUMBER
     ========================= */
 
-    if(/[0-9]/.test(key)){
+    if (/[0-9]/.test(key)) {
 
         /* Restart setelah hasil */
 
-        if(waitingForNewNumber){
+        if (waitingForNewNumber) {
 
             screen.textContent = "";
             expressionDisplay.textContent = "";
@@ -422,7 +469,7 @@ document.addEventListener("keydown", (event) => {
 
         }
 
-        if(screen.textContent === "0"){
+        if (screen.textContent === "0") {
             screen.textContent = "";
         }
 
@@ -436,7 +483,7 @@ document.addEventListener("keydown", (event) => {
        DECIMAL
     ========================= */
 
-    else if(key === "."){
+    else if (key === ".") {
 
         screen.textContent += key;
 
@@ -448,19 +495,19 @@ document.addEventListener("keydown", (event) => {
        OPERATOR
     ========================= */
 
-    else if(
+    else if (
         key === "+" ||
         key === "-" ||
         key === "*" ||
         key === "/" ||
         key === "%"
-    ){
+    ) {
 
         let expression = expressionDisplay.textContent;
 
         /* Jika habis calculate */
 
-        if(justCalculated){
+        if (justCalculated) {
 
             expression = screen.textContent;
 
@@ -475,13 +522,13 @@ document.addEventListener("keydown", (event) => {
 
         /* Replace operator */
 
-        if(
+        if (
             lastChar === "+" ||
             lastChar === "-" ||
             lastChar === "*" ||
             lastChar === "/" ||
             lastChar === "%"
-        ){
+        ) {
 
             expression = expression.slice(0, -1);
 
@@ -502,7 +549,7 @@ document.addEventListener("keydown", (event) => {
        ENTER
     ========================= */
 
-    else if(key === "Enter"){
+    else if (key === "Enter") {
 
         event.preventDefault();
 
@@ -514,7 +561,7 @@ document.addEventListener("keydown", (event) => {
        BACKSPACE
     ========================= */
 
-    else if(key === "Backspace"){
+    else if (key === "Backspace") {
 
         event.preventDefault();
 
@@ -524,7 +571,7 @@ document.addEventListener("keydown", (event) => {
         expressionDisplay.textContent =
             expressionDisplay.textContent.slice(0, -1);
 
-        if(screen.textContent === ""){
+        if (screen.textContent === "") {
             screen.textContent = "0";
         }
 
@@ -534,7 +581,7 @@ document.addEventListener("keydown", (event) => {
        ESCAPE
     ========================= */
 
-    else if(key === "Escape"){
+    else if (key === "Escape") {
 
         screen.textContent = "0";
 
@@ -554,205 +601,191 @@ scientificButtons.forEach(button => {
 
         const value = button.textContent;
 
-        const expression =
-            expressionDisplay.textContent;
+        /* Reset setelah hasil */
 
-        try{
+        if(waitingForNewNumber){
 
-            switch(value){
+            screen.textContent = "";
+            expressionDisplay.textContent = "";
 
-                case "sin":
+            waitingForNewNumber = false;
+            justCalculated = false;
 
-                    screen.textContent =
-                        Math.sin(
-                            toRadians(eval(expression))
-                        );
+        }
 
-                    addToHistory(`sin(${expression})`, screen.textContent);
+        switch(value){
 
-                    break;
+            /* =========================
+               TRIGONOMETRY
+            ========================= */
 
-                case "cos":
+            case "sin":
 
-                    screen.textContent =
-                        Math.cos(
-                            toRadians(eval(expression))
-                        );
+                expressionDisplay.textContent += "sin(";
+                screen.textContent += "sin(";
 
-                    addToHistory(`cos(${expression})`, screen.textContent);
+                break;
 
-                    break;
+            case "cos":
 
-                case "tan":
+                expressionDisplay.textContent += "cos(";
+                screen.textContent += "cos(";
 
-                    screen.textContent =
-                        Math.tan(
-                            toRadians(eval(expression))
-                        );
+                break;
 
-                    addToHistory(`tan(${expression})`, screen.textContent);
+            case "tan":
 
-                    break;
+                expressionDisplay.textContent += "tan(";
+                screen.textContent += "tan(";
 
-                case "asin":
+                break;
 
-                    screen.textContent =
-                        fromRadians(
-                            Math.asin(eval(expression))
-                        );
+            case "asin":
 
-                    addToHistory(expression, screen.textContent);
+                expressionDisplay.textContent += "asin(";
+                screen.textContent += "asin(";
 
-                    break;
+                break;
 
-                case "acos":
+            case "acos":
 
-                    screen.textContent =
-                        fromRadians(
-                            Math.acos(eval(expression))
-                        );
+                expressionDisplay.textContent += "acos(";
+                screen.textContent += "acos(";
 
-                    addToHistory(expression, screen.textContent);
+                break;
 
-                    break;
+            case "atan":
 
-                case "atan":
+                expressionDisplay.textContent += "atan(";
+                screen.textContent += "atan(";
 
-                    screen.textContent =
-                        fromRadians(
-                            Math.atan(eval(expression))
-                        );
+                break;
 
-                    addToHistory(expression, screen.textContent);
+            /* =========================
+               LOG
+            ========================= */
 
-                    break;
+            case "log":
 
-                case "log":
+                expressionDisplay.textContent += "log(";
+                screen.textContent += "log(";
 
-                    screen.textContent =
-                        Math.log10(eval(expression));
+                break;
 
-                    addToHistory(`log(${expression})`, screen.textContent);
+            case "ln":
 
-                    break;
+                expressionDisplay.textContent += "ln(";
+                screen.textContent += "ln(";
 
-                case "ln":
+                break;
 
-                    screen.textContent =
-                        Math.log(eval(expression));
+            /* =========================
+               SQRT
+            ========================= */
 
-                    addToHistory(`ln(${expression})`, screen.textContent);
+            case "√":
 
-                    break;
+                expressionDisplay.textContent += "√(";
+                screen.textContent += "√(";
 
-                case "π":
+                break;
 
-                    screen.textContent += Math.PI;
-                    expressionDisplay.textContent += Math.PI;
+            /* =========================
+               POWER
+            ========================= */
 
-                    break;
+            case "x²":
 
-                case "e":
+                expressionDisplay.textContent += "^2";
+                screen.textContent += "²";
 
-                    screen.textContent += Math.E;
-                    expressionDisplay.textContent += Math.E;
+                break;
 
-                    break;
+            case "x³":
 
-                case "√":
+                expressionDisplay.textContent += "^3";
+                screen.textContent += "³";
 
-                    screen.textContent =
-                        Math.sqrt(eval(expression));
+                break;
 
-                    addToHistory(`√${expression}`, screen.textContent);
+            case "^":
 
-                    break;
+                expressionDisplay.textContent += "^";
+                screen.textContent += "^";
 
-                case "x²":
+                break;
 
-                    screen.textContent =
-                        Math.pow(eval(expression), 2);
+            /* =========================
+               CONSTANTS
+            ========================= */
 
-                    addToHistory(`${expression}²`, screen.textContent);
+            case "π":
 
-                    break;
+                expressionDisplay.textContent += "π";
+                screen.textContent += "π";
 
-                case "x³":
+                break;
 
-                    screen.textContent =
-                        Math.pow(eval(expression), 3);
+            case "e":
 
-                    addToHistory(`${expression}³`, screen.textContent);
+                expressionDisplay.textContent += "e";
+                screen.textContent += "e";
 
-                    break;
+                break;
 
-                case "^":
+            /* =========================
+               ABS
+            ========================= */
 
-                    screen.textContent += "**";
-                    expressionDisplay.textContent += "**";
+            case "|x|":
 
-                    break;
+                expressionDisplay.textContent += "abs(";
+                screen.textContent += "abs(";
 
-                case "!":
+                break;
 
-                    let num = eval(expression);
+            /* =========================
+               RECIPROCAL
+            ========================= */
 
-                    let result = 1;
+            case "1/x":
 
-                    for(let i = 1; i <= num; i++){
-                        result *= i;
-                    }
+                expressionDisplay.textContent =
+                    `1/(${expressionDisplay.textContent})`;
 
-                    screen.textContent = result;
+                screen.textContent =
+                    `1/(${screen.textContent})`;
 
-                    addToHistory(`${expression}!`, screen.textContent);
+                break;
 
-                    break;
+            /* =========================
+               FACTORIAL
+            ========================= */
 
-                case "(":
+            case "!":
 
-                    screen.textContent += "(";
-                    expressionDisplay.textContent += "(";
+                expressionDisplay.textContent += "!";
+                screen.textContent += "!";
 
-                    break;
+                break;
 
-                case ")":
+            /* =========================
+               PARENTHESIS
+            ========================= */
 
-                    screen.textContent += ")";
-                    expressionDisplay.textContent += ")";
+            case "(":
 
-                    break;
+                expressionDisplay.textContent += "(";
+                screen.textContent += "(";
 
-                case "|x|":
+                break;
 
-                    screen.textContent =
-                        Math.abs(eval(expression));
+            case ")":
 
-                    addToHistory(`|${expression}|`, screen.textContent);
+                expressionDisplay.textContent += ")";
+                screen.textContent += ")";
 
-                    break;
-
-                case "1/x":
-
-                    screen.textContent =
-                        1 / eval(expression);
-
-                    addToHistory(`1/${expression}`, screen.textContent);
-
-                    break;
-
-                case "EXP":
-
-                    screen.textContent += "e";
-                    expressionDisplay.textContent += "e";
-
-                    break;
-
-            }
-
-        }catch{
-
-            screen.textContent = "Error";
+                break;
 
         }
 
