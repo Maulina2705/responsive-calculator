@@ -5,7 +5,7 @@ const expressionDisplay = document.getElementById("expression");
    UPDATE SCREEN
 ========================= */
 
-function updateScreen(value){
+function updateScreen(value) {
 
     screen.innerHTML = value;
 
@@ -95,7 +95,7 @@ const scientificButtons =
 const savedTheme =
     localStorage.getItem("theme");
 
-if(savedTheme === "light"){
+if (savedTheme === "light") {
 
     body.classList.add("light-mode");
 
@@ -111,13 +111,13 @@ themeToggle.addEventListener("click", () => {
 
     body.classList.toggle("light-mode");
 
-    if(body.classList.contains("light-mode")){
+    if (body.classList.contains("light-mode")) {
 
         themeToggle.textContent = "☀️";
 
         localStorage.setItem("theme", "light");
 
-    }else{
+    } else {
 
         themeToggle.textContent = "🌙";
 
@@ -187,16 +187,16 @@ radBtn.addEventListener("click", () => {
    HISTORY
 ========================= */
 
-function saveHistory(){
+function saveHistory() {
 
     const items = [];
 
     document.querySelectorAll(".history-item")
-    .forEach(item => {
+        .forEach(item => {
 
-        items.push(item.textContent);
+            items.push(item.textContent);
 
-    });
+        });
 
     localStorage.setItem(
         "calculatorHistory",
@@ -205,13 +205,13 @@ function saveHistory(){
 
 }
 
-function loadHistory(){
+function loadHistory() {
 
     const savedHistory = JSON.parse(
         localStorage.getItem("calculatorHistory")
     );
 
-    if(savedHistory){
+    if (savedHistory) {
 
         savedHistory.forEach(history => {
 
@@ -230,7 +230,7 @@ function loadHistory(){
 
 }
 
-function addToHistory(expression, result){
+function addToHistory(expression, result) {
 
     const item =
         document.createElement("div");
@@ -250,9 +250,9 @@ function addToHistory(expression, result){
    ANGLE CONVERTER
 ========================= */
 
-function toRadians(value){
+function toRadians(value) {
 
-    if(angleMode === "DEG"){
+    if (angleMode === "DEG") {
 
         return value * (Math.PI / 180);
 
@@ -262,9 +262,9 @@ function toRadians(value){
 
 }
 
-function fromRadians(value){
+function fromRadians(value) {
 
-    if(angleMode === "DEG"){
+    if (angleMode === "DEG") {
 
         return value * (180 / Math.PI);
 
@@ -278,7 +278,7 @@ function fromRadians(value){
    SCIENTIFIC FUNCTIONS
 ========================= */
 
-function sin(value){
+function sin(value) {
 
     return Math.sin(
         toRadians(value)
@@ -286,7 +286,7 @@ function sin(value){
 
 }
 
-function cos(value){
+function cos(value) {
 
     return Math.cos(
         toRadians(value)
@@ -294,7 +294,7 @@ function cos(value){
 
 }
 
-function tan(value){
+function tan(value) {
 
     return Math.tan(
         toRadians(value)
@@ -302,7 +302,7 @@ function tan(value){
 
 }
 
-function asin(value){
+function asin(value) {
 
     return fromRadians(
         Math.asin(value)
@@ -310,7 +310,7 @@ function asin(value){
 
 }
 
-function acos(value){
+function acos(value) {
 
     return fromRadians(
         Math.acos(value)
@@ -318,7 +318,7 @@ function acos(value){
 
 }
 
-function atan(value){
+function atan(value) {
 
     return fromRadians(
         Math.atan(value)
@@ -326,25 +326,25 @@ function atan(value){
 
 }
 
-function log(value){
+function log(value) {
 
     return Math.log10(value);
 
 }
 
-function ln(value){
+function ln(value) {
 
     return Math.log(value);
 
 }
 
-function sqrt(value){
+function sqrt(value) {
 
     return Math.sqrt(value);
 
 }
 
-function abs(value){
+function abs(value) {
 
     return Math.abs(value);
 
@@ -354,7 +354,7 @@ function abs(value){
    FORMAT EXPRESSION
 ========================= */
 
-function formatExpression(expression){
+function formatExpression(expression) {
 
     expression = expression.replace(
 
@@ -364,7 +364,7 @@ function formatExpression(expression){
 
             let result = 1;
 
-            for(let i = 1; i <= n; i++){
+            for (let i = 1; i <= n; i++) {
 
                 result *= i;
 
@@ -392,9 +392,9 @@ function formatExpression(expression){
    FRACTION CONVERTER
 ========================= */
 
-function decimalToFraction(decimal){
+function decimalToFraction(decimal) {
 
-    if(Number.isInteger(decimal)){
+    if (Number.isInteger(decimal)) {
 
         return decimal.toString();
 
@@ -409,7 +409,7 @@ function decimalToFraction(decimal){
         decimal - numerator / denominator
     );
 
-    for(let d = 1; d <= 1000; d++){
+    for (let d = 1; d <= 1000; d++) {
 
         let n = Math.round(decimal * d);
 
@@ -417,7 +417,7 @@ function decimalToFraction(decimal){
             decimal - n / d
         );
 
-        if(newError < error){
+        if (newError < error) {
 
             numerator = n;
             denominator = d;
@@ -426,7 +426,7 @@ function decimalToFraction(decimal){
 
         }
 
-        if(error < tolerance){
+        if (error < tolerance) {
 
             break;
 
@@ -434,7 +434,7 @@ function decimalToFraction(decimal){
 
     }
 
-    
+
     return `${numerator}/${denominator}`;
 
 }
@@ -443,11 +443,11 @@ function decimalToFraction(decimal){
    RENDER FRACTION
 ========================= */
 
-function renderFraction(fraction){
+function renderFraction(fraction) {
 
     const parts = fraction.split("/");
 
-    if(parts.length !== 2){
+    if (parts.length !== 2) {
 
         updateScreen(fraction);
 
@@ -484,7 +484,7 @@ numberButtons.forEach(button => {
 
     button.addEventListener("click", () => {
 
-        if(waitingForNewNumber){
+        if (waitingForNewNumber) {
 
             updateScreen("");
 
@@ -495,7 +495,7 @@ numberButtons.forEach(button => {
 
         }
 
-        if(screen.innerText === "0"){
+        if (screen.innerText === "0") {
 
             updateScreen("");
 
@@ -526,7 +526,7 @@ operatorButtons.forEach(button => {
         let expression =
             expressionDisplay.textContent;
 
-        if(justCalculated){
+        if (justCalculated) {
 
             expression = lastAnswer.toString();
 
@@ -542,13 +542,13 @@ operatorButtons.forEach(button => {
         const lastChar =
             expression.slice(-1);
 
-        if(
+        if (
             lastChar === "+" ||
             lastChar === "-" ||
             lastChar === "*" ||
             lastChar === "/" ||
             lastChar === "%"
-        ){
+        ) {
 
             expression =
                 expression.slice(0, -1);
@@ -592,7 +592,7 @@ backspaceButton.addEventListener("click", () => {
         expressionDisplay.textContent
     );
 
-    if(screen.innerText === ""){
+    if (screen.innerText === "") {
 
         updateScreen("0");
 
@@ -604,18 +604,18 @@ backspaceButton.addEventListener("click", () => {
    CALCULATE
 ========================= */
 
-function calculate(){
+function calculate() {
 
-    try{
+    try {
 
         let expression =
             expressionDisplay.textContent;
 
-        if(
+        if (
             justCalculated &&
             lastOperator &&
             lastNumber
-        ){
+        ) {
 
             expression =
                 `${lastAnswer}${lastOperator}${lastNumber}`;
@@ -624,16 +624,16 @@ function calculate(){
 
         const openBrackets =
             (expression.match(/\(/g) || [])
-            .length;
+                .length;
 
         const closeBrackets =
             (expression.match(/\)/g) || [])
-            .length;
+                .length;
 
         const missingBrackets =
             openBrackets - closeBrackets;
 
-        if(missingBrackets > 0){
+        if (missingBrackets > 0) {
 
             expression +=
                 ")".repeat(missingBrackets);
@@ -645,7 +645,7 @@ function calculate(){
                 /([+\-*/%])(\d+\.?\d*)$/
             );
 
-        if(match){
+        if (match) {
 
             lastOperator = match[1];
             lastNumber = match[2];
@@ -696,7 +696,7 @@ function calculate(){
 
         waitingForNewNumber = true;
 
-    }catch{
+    } catch {
 
         updateScreen("Error");
 
@@ -722,9 +722,9 @@ document.addEventListener("keydown", (event) => {
 
     const key = event.key;
 
-    if(/[0-9]/.test(key)){
+    if (/[0-9]/.test(key)) {
 
-        if(waitingForNewNumber){
+        if (waitingForNewNumber) {
 
             updateScreen("");
 
@@ -735,7 +735,7 @@ document.addEventListener("keydown", (event) => {
 
         }
 
-        if(screen.innerText === "0"){
+        if (screen.innerText === "0") {
 
             updateScreen("");
 
@@ -749,7 +749,7 @@ document.addEventListener("keydown", (event) => {
 
     }
 
-    else if(key === "."){
+    else if (key === ".") {
 
         expressionDisplay.textContent += key;
 
@@ -759,18 +759,18 @@ document.addEventListener("keydown", (event) => {
 
     }
 
-    else if(
+    else if (
         key === "+" ||
         key === "-" ||
         key === "*" ||
         key === "/" ||
         key === "%"
-    ){
+    ) {
 
         let expression =
             expressionDisplay.textContent;
 
-        if(justCalculated){
+        if (justCalculated) {
 
             expression = lastAnswer.toString();
 
@@ -786,13 +786,13 @@ document.addEventListener("keydown", (event) => {
         const lastChar =
             expression.slice(-1);
 
-        if(
+        if (
             lastChar === "+" ||
             lastChar === "-" ||
             lastChar === "*" ||
             lastChar === "/" ||
             lastChar === "%"
-        ){
+        ) {
 
             expression =
                 expression.slice(0, -1);
@@ -808,7 +808,7 @@ document.addEventListener("keydown", (event) => {
 
     }
 
-    else if(key === "Enter"){
+    else if (key === "Enter") {
 
         event.preventDefault();
 
@@ -816,7 +816,7 @@ document.addEventListener("keydown", (event) => {
 
     }
 
-    else if(key === "Backspace"){
+    else if (key === "Backspace") {
 
         event.preventDefault();
 
@@ -828,7 +828,7 @@ document.addEventListener("keydown", (event) => {
             expressionDisplay.textContent
         );
 
-        if(screen.innerText === ""){
+        if (screen.innerText === "") {
 
             updateScreen("0");
 
@@ -836,7 +836,7 @@ document.addEventListener("keydown", (event) => {
 
     }
 
-    else if(key === "Escape"){
+    else if (key === "Escape") {
 
         updateScreen("0");
 
@@ -857,7 +857,7 @@ scientificButtons.forEach(button => {
         const value =
             button.textContent;
 
-        if(waitingForNewNumber){
+        if (waitingForNewNumber) {
 
             updateScreen("");
 
@@ -868,10 +868,10 @@ scientificButtons.forEach(button => {
 
         }
 
-        if(
+        if (
             expressionDisplay.textContent ===
             "0"
-        ){
+        ) {
 
             expressionDisplay.textContent = "";
 
@@ -879,7 +879,7 @@ scientificButtons.forEach(button => {
 
         }
 
-        switch(value){
+        switch (value) {
 
             case "sin":
 
@@ -1070,7 +1070,7 @@ scientificButtons.forEach(button => {
 
             case "a/b":
 
-                try{
+                try {
 
                     const fraction =
                         decimalToFraction(
@@ -1089,7 +1089,7 @@ scientificButtons.forEach(button => {
 
                     justCalculated = true;
 
-                }catch{
+                } catch {
 
                     updateScreen("Error");
 
