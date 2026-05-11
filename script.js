@@ -392,6 +392,23 @@ function calculate() {
 
         let expression = expressionDisplay.textContent;
 
+        /* AUTO CLOSE PARENTHESIS */
+
+        const openBrackets =
+            (expression.match(/\(/g) || []).length;
+
+        const closeBrackets =
+            (expression.match(/\)/g) || []).length;
+
+        const missingBrackets =
+            openBrackets - closeBrackets;
+
+        if (missingBrackets > 0) {
+
+            expression += ")".repeat(missingBrackets);
+
+        }
+
         /* ENTER BERULANG */
 
         if (justCalculated && lastOperator && lastNumber) {
@@ -603,7 +620,7 @@ scientificButtons.forEach(button => {
 
         /* Reset setelah hasil */
 
-        if(waitingForNewNumber){
+        if (waitingForNewNumber) {
 
             screen.textContent = "";
             expressionDisplay.textContent = "";
@@ -613,7 +630,7 @@ scientificButtons.forEach(button => {
 
         }
 
-        switch(value){
+        switch (value) {
 
             /* =========================
                TRIGONOMETRY
