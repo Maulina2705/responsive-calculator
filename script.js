@@ -71,7 +71,7 @@ const scientificButtons =
 
 const savedTheme = localStorage.getItem("theme");
 
-if(savedTheme === "light"){
+if (savedTheme === "light") {
 
     body.classList.add("light-mode");
 
@@ -87,13 +87,13 @@ themeToggle.addEventListener("click", () => {
 
     body.classList.toggle("light-mode");
 
-    if(body.classList.contains("light-mode")){
+    if (body.classList.contains("light-mode")) {
 
         themeToggle.textContent = "☀️";
 
         localStorage.setItem("theme", "light");
 
-    }else{
+    } else {
 
         themeToggle.textContent = "🌙";
 
@@ -159,16 +159,16 @@ radBtn.addEventListener("click", () => {
    HISTORY FUNCTIONS
 ========================= */
 
-function saveHistory(){
+function saveHistory() {
 
     const items = [];
 
     document.querySelectorAll(".history-item")
-    .forEach(item => {
+        .forEach(item => {
 
-        items.push(item.textContent);
+            items.push(item.textContent);
 
-    });
+        });
 
     localStorage.setItem(
         "calculatorHistory",
@@ -177,13 +177,13 @@ function saveHistory(){
 
 }
 
-function loadHistory(){
+function loadHistory() {
 
     const savedHistory = JSON.parse(
         localStorage.getItem("calculatorHistory")
     );
 
-    if(savedHistory){
+    if (savedHistory) {
 
         savedHistory.forEach(history => {
 
@@ -202,7 +202,7 @@ function loadHistory(){
 
 }
 
-function addToHistory(expression, result){
+function addToHistory(expression, result) {
 
     const item = document.createElement("div");
 
@@ -220,9 +220,9 @@ function addToHistory(expression, result){
    ANGLE CONVERSION
 ========================= */
 
-function toRadians(value){
+function toRadians(value) {
 
-    if(angleMode === "DEG"){
+    if (angleMode === "DEG") {
 
         return value * (Math.PI / 180);
 
@@ -232,9 +232,9 @@ function toRadians(value){
 
 }
 
-function fromRadians(value){
+function fromRadians(value) {
 
-    if(angleMode === "DEG"){
+    if (angleMode === "DEG") {
 
         return value * (180 / Math.PI);
 
@@ -248,7 +248,9 @@ function fromRadians(value){
    FORMAT EXPRESSION
 ========================= */
 
-function formatExpression(expression){
+function formatExpression(expression) {
+
+    /* FACTORIAL */
 
     expression = expression.replace(
         /(\d+)!/g,
@@ -256,7 +258,7 @@ function formatExpression(expression){
 
             let result = 1;
 
-            for(let i = 1; i <= n; i++){
+            for (let i = 1; i <= n; i++) {
                 result *= i;
             }
 
@@ -266,34 +268,34 @@ function formatExpression(expression){
 
     return expression
 
-        .replace(/sin\\(/g,
+        .replace(/sin\(/g,
             "Math.sin(toRadians(")
 
-        .replace(/cos\\(/g,
+        .replace(/cos\(/g,
             "Math.cos(toRadians(")
 
-        .replace(/tan\\(/g,
+        .replace(/tan\(/g,
             "Math.tan(toRadians(")
 
-        .replace(/asin\\(/g,
+        .replace(/asin\(/g,
             "fromRadians(Math.asin(")
 
-        .replace(/acos\\(/g,
+        .replace(/acos\(/g,
             "fromRadians(Math.acos(")
 
-        .replace(/atan\\(/g,
+        .replace(/atan\(/g,
             "fromRadians(Math.atan(")
 
-        .replace(/log\\(/g,
+        .replace(/log\(/g,
             "Math.log10(")
 
-        .replace(/ln\\(/g,
+        .replace(/ln\(/g,
             "Math.log(")
 
-        .replace(/√\\(/g,
+        .replace(/√\(/g,
             "Math.sqrt(")
 
-        .replace(/abs\\(/g,
+        .replace(/abs\(/g,
             "Math.abs(")
 
         .replace(/π/g,
@@ -315,7 +317,7 @@ numberButtons.forEach(button => {
 
     button.addEventListener("click", () => {
 
-        if(waitingForNewNumber){
+        if (waitingForNewNumber) {
 
             screen.textContent = "";
             expressionDisplay.textContent = "";
@@ -325,7 +327,7 @@ numberButtons.forEach(button => {
 
         }
 
-        if(screen.textContent === "0"){
+        if (screen.textContent === "0") {
             screen.textContent = "";
         }
 
@@ -352,7 +354,7 @@ operatorButtons.forEach(button => {
         let expression =
             expressionDisplay.textContent;
 
-        if(justCalculated){
+        if (justCalculated) {
 
             expression = screen.textContent;
 
@@ -366,13 +368,13 @@ operatorButtons.forEach(button => {
 
         const lastChar = expression.slice(-1);
 
-        if(
+        if (
             lastChar === "+" ||
             lastChar === "-" ||
             lastChar === "*" ||
             lastChar === "/" ||
             lastChar === "%"
-        ){
+        ) {
 
             expression =
                 expression.slice(0, -1);
@@ -414,7 +416,7 @@ backspaceButton.addEventListener("click", () => {
     screen.textContent =
         expressionDisplay.textContent;
 
-    if(screen.textContent === ""){
+    if (screen.textContent === "") {
         screen.textContent = "0";
     }
 
@@ -424,20 +426,20 @@ backspaceButton.addEventListener("click", () => {
    CALCULATE
 ========================= */
 
-function calculate(){
+function calculate() {
 
-    try{
+    try {
 
         let expression =
             expressionDisplay.textContent;
 
         /* ENTER BERULANG */
 
-        if(
+        if (
             justCalculated &&
             lastOperator &&
             lastNumber
-        ){
+        ) {
 
             expression =
                 `${screen.textContent}${lastOperator}${lastNumber}`;
@@ -455,7 +457,7 @@ function calculate(){
         const missingBrackets =
             openBrackets - closeBrackets;
 
-        if(missingBrackets > 0){
+        if (missingBrackets > 0) {
 
             expression +=
                 ")".repeat(missingBrackets);
@@ -469,7 +471,7 @@ function calculate(){
                 /([+\-*/%])(\d+\.?\d*)$/
             );
 
-        if(match){
+        if (match) {
 
             lastOperator = match[1];
             lastNumber = match[2];
@@ -493,7 +495,7 @@ function calculate(){
 
         waitingForNewNumber = true;
 
-    }catch{
+    } catch {
 
         screen.textContent = "Error";
 
@@ -521,9 +523,9 @@ document.addEventListener("keydown", (event) => {
 
     /* NUMBER */
 
-    if(/[0-9]/.test(key)){
+    if (/[0-9]/.test(key)) {
 
-        if(waitingForNewNumber){
+        if (waitingForNewNumber) {
 
             screen.textContent = "";
             expressionDisplay.textContent = "";
@@ -533,7 +535,7 @@ document.addEventListener("keydown", (event) => {
 
         }
 
-        if(screen.textContent === "0"){
+        if (screen.textContent === "0") {
             screen.textContent = "";
         }
 
@@ -546,7 +548,7 @@ document.addEventListener("keydown", (event) => {
 
     /* DECIMAL */
 
-    else if(key === "."){
+    else if (key === ".") {
 
         expressionDisplay.textContent += key;
 
@@ -557,18 +559,18 @@ document.addEventListener("keydown", (event) => {
 
     /* OPERATOR */
 
-    else if(
+    else if (
         key === "+" ||
         key === "-" ||
         key === "*" ||
         key === "/" ||
         key === "%"
-    ){
+    ) {
 
         let expression =
             expressionDisplay.textContent;
 
-        if(justCalculated){
+        if (justCalculated) {
 
             expression = screen.textContent;
 
@@ -582,13 +584,13 @@ document.addEventListener("keydown", (event) => {
 
         const lastChar = expression.slice(-1);
 
-        if(
+        if (
             lastChar === "+" ||
             lastChar === "-" ||
             lastChar === "*" ||
             lastChar === "/" ||
             lastChar === "%"
-        ){
+        ) {
 
             expression =
                 expression.slice(0, -1);
@@ -606,7 +608,7 @@ document.addEventListener("keydown", (event) => {
 
     /* ENTER */
 
-    else if(key === "Enter"){
+    else if (key === "Enter") {
 
         event.preventDefault();
 
@@ -616,18 +618,18 @@ document.addEventListener("keydown", (event) => {
 
     /* BACKSPACE */
 
-    else if(key === "Backspace"){
+    else if (key === "Backspace") {
 
         event.preventDefault();
 
         expressionDisplay.textContent =
             expressionDisplay.textContent
-            .slice(0, -1);
+                .slice(0, -1);
 
         screen.textContent =
             expressionDisplay.textContent;
 
-        if(screen.textContent === ""){
+        if (screen.textContent === "") {
             screen.textContent = "0";
         }
 
@@ -635,7 +637,7 @@ document.addEventListener("keydown", (event) => {
 
     /* ESCAPE */
 
-    else if(key === "Escape"){
+    else if (key === "Escape") {
 
         screen.textContent = "0";
 
@@ -655,7 +657,7 @@ scientificButtons.forEach(button => {
 
         const value = button.textContent;
 
-        if(waitingForNewNumber){
+        if (waitingForNewNumber) {
 
             screen.textContent = "";
             expressionDisplay.textContent = "";
@@ -665,7 +667,7 @@ scientificButtons.forEach(button => {
 
         }
 
-        switch(value){
+        switch (value) {
 
             /* TRIG */
 
