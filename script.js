@@ -679,6 +679,7 @@ function calculate() {
             sqrt,
             abs
         );
+        console.log(result);
 
         lastAnswer = result;
 
