@@ -850,7 +850,7 @@ scientificButtons.forEach(button => {
     button.addEventListener("click", () => {
 
         const value =
-            button.textContent;
+            button.textContent.trim();
 
         if (
             waitingForNewNumber &&
