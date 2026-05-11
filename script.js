@@ -718,6 +718,51 @@ document.addEventListener("keydown", (event) => {
 });
 
 /* =========================
+   DECIMAL TO FRACTION
+========================= */
+
+function decimalToFraction(decimal) {
+
+    if (Number.isInteger(decimal)) {
+        return decimal.toString();
+    }
+
+    const tolerance = 1.0E-6;
+
+    let numerator = 1;
+    let denominator = 1;
+
+    let error = Math.abs(
+        decimal - numerator / denominator
+    );
+
+    for (let d = 1; d <= 1000; d++) {
+
+        let n = Math.round(decimal * d);
+
+        let newError = Math.abs(
+            decimal - n / d
+        );
+
+        if (newError < error) {
+
+            numerator = n;
+            denominator = d;
+
+            error = newError;
+        }
+
+        if (error < tolerance) {
+            break;
+        }
+
+    }
+
+    return `${numerator}/${denominator}`;
+
+}
+
+/* =========================
    SCIENTIFIC BUTTONS
 ========================= */
 
@@ -934,6 +979,29 @@ scientificButtons.forEach(button => {
 
                 screen.textContent =
                     expressionDisplay.textContent;
+
+                break;
+
+            /* FRACTION */
+
+            case "a/b":
+
+                const currentValue =
+                    parseFloat(screen.textContent);
+
+                if (!isNaN(currentValue)) {
+
+                    const fraction =
+                        decimalToFraction(currentValue);
+
+                    screen.textContent = fraction;
+
+                    addToHistory(
+                        `fraction(${currentValue})`,
+                        fraction
+                    );
+
+                }
 
                 break;
 
