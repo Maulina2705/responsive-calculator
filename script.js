@@ -251,7 +251,7 @@ function fromRadians(value){
 function formatExpression(expression){
 
     expression = expression.replace(
-        /(\\d+)!/g,
+        /(\d+)!/g,
         (_, n) => {
 
             let result = 1;
@@ -299,10 +299,10 @@ function formatExpression(expression){
         .replace(/π/g,
             "Math.PI")
 
-        .replace(/\\be\\b/g,
+        .replace(/\be\b/g,
             "Math.E")
 
-        .replace(/\\^/g,
+        .replace(/\^/g,
             "**");
 
 }
@@ -447,10 +447,10 @@ function calculate(){
         /* AUTO CLOSE PARENTHESIS */
 
         const openBrackets =
-            (expression.match(/\\(/g) || []).length;
+            (expression.match(/\(/g) || []).length;
 
         const closeBrackets =
-            (expression.match(/\\)/g) || []).length;
+            (expression.match(/\)/g) || []).length;
 
         const missingBrackets =
             openBrackets - closeBrackets;
@@ -466,7 +466,7 @@ function calculate(){
 
         const match =
             expression.match(
-                /([+\\-*/%])(\\d+\\.?\\d*)$/
+                /([+\-*/%])(\d+\.?\d*)$/
             );
 
         if(match){
