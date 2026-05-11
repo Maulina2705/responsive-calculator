@@ -26,6 +26,61 @@ body {
     transition: 0.3s;
 }
 
+/* HISTORY PANEL */
+
+.history-panel {
+    display: none;
+    flex-direction: column;
+    gap: 15px;
+
+    width: 220px;
+
+    background: #151515;
+
+    padding: 15px;
+
+    border-radius: 20px;
+
+    overflow: hidden;
+}
+
+.history-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    color: white;
+}
+
+.history-header button {
+    height: 40px;
+    padding: 0 12px;
+    font-size: 0.9rem;
+}
+
+.history-list {
+    display: flex;
+    flex-direction: column;
+
+    gap: 10px;
+
+    max-height: 400px;
+
+    overflow-y: auto;
+}
+
+.history-item {
+    background: #262626;
+
+    padding: 12px;
+
+    border-radius: 12px;
+
+    color: white;
+
+    word-break: break-all;
+}
+
 /* SCIENTIFIC MODE */
 
 .calculator.scientific-layout {
@@ -172,6 +227,19 @@ button:hover {
     background: #f1f1f1;
 }
 
+.light-mode .history-panel {
+    background: #f1f1f1;
+}
+
+.light-mode .history-header {
+    color: black;
+}
+
+.light-mode .history-item {
+    background: white;
+    color: black;
+}
+
 /* MOBILE RESPONSIVE */
 
 @media(max-width:768px) {
@@ -225,6 +293,10 @@ button:hover {
 
     .calculator-body {
         overflow: hidden;
+    }
+
+    .history-panel {
+        width: 100%;
     }
 
 }

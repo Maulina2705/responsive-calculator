@@ -26,6 +26,10 @@ const backspaceButton = document.querySelector(".backspace");
 const equalButton = document.querySelector(".equal");
 
 const scientificButtons = document.querySelectorAll(".scientific");
+const historyPanel = document.querySelector(".history-panel");
+const historyList = document.querySelector(".history-list");
+
+const clearHistoryButton = document.getElementById("clearHistory");
 
 /* =========================
    THEME TOGGLE
@@ -55,6 +59,7 @@ scientificBtn.addEventListener("click", () => {
     standardBtn.classList.remove("active");
 
     calculator.classList.add("scientific-layout");
+    historyPanel.style.display = "flex";
 
 });
 
@@ -66,6 +71,7 @@ standardBtn.addEventListener("click", () => {
     scientificBtn.classList.remove("active");
 
     calculator.classList.remove("scientific-layout");
+    historyPanel.style.display = "none";
 
 });
 
@@ -135,11 +141,29 @@ backspaceButton.addEventListener("click", () => {
    CALCULATE FUNCTION
 ========================= */
 
+function addToHistory(expression, result){
+
+    const item = document.createElement("div");
+
+    item.classList.add("history-item");
+
+    item.textContent = `${expression} = ${result}`;
+
+    historyList.prepend(item);
+
+}
+
 function calculate(){
 
     try{
 
-        screen.value = eval(screen.value);
+        const expression = screen.value;
+
+        const result = eval(expression);
+
+        screen.value = result;
+
+        addToHistory(expression, result);
 
     }catch{
 
@@ -354,5 +378,15 @@ scientificButtons.forEach(button => {
         }
 
     });
+
+});
+
+/* =========================
+   CLEAR HISTORY
+========================= */
+
+clearHistoryButton.addEventListener("click", () => {
+
+    historyList.innerHTML = "";
 
 });
