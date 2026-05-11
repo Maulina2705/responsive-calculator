@@ -982,45 +982,17 @@ scientificButtons.forEach(button => {
 
                 break;
 
+
             /* FRACTION */
 
             case "a/b":
 
                 try {
 
-                    const expression =
-                        expressionDisplay.textContent;
+                    const value =
+                        parseFloat(screen.textContent);
 
-                    const formattedExpression =
-                        formatExpression(expression);
-
-                    const value = Function(
-
-                        "sin",
-                        "cos",
-                        "tan",
-                        "asin",
-                        "acos",
-                        "atan",
-                        "log",
-                        "ln",
-                        "sqrt",
-                        "abs",
-
-                        `return ${formattedExpression}`
-
-                    )(
-                        sin,
-                        cos,
-                        tan,
-                        asin,
-                        acos,
-                        atan,
-                        log,
-                        ln,
-                        sqrt,
-                        abs
-                    );
+                    if (isNaN(value)) return;
 
                     const fraction =
                         decimalToFraction(value);
@@ -1032,6 +1004,9 @@ scientificButtons.forEach(button => {
                         fraction
                     );
 
+                    justCalculated = true;
+                    waitingForNewNumber = true;
+
                 } catch {
 
                     screen.textContent = "Error";
@@ -1039,6 +1014,7 @@ scientificButtons.forEach(button => {
                 }
 
                 break;
+
             /* PARENTHESIS */
 
             case "(":
