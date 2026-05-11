@@ -79,8 +79,8 @@ body {
     font-size: 1rem;
 }
 
-.mode-switch button{
-    font-weight:bold;
+.mode-switch button {
+    font-weight: bold;
 }
 
 .active {
@@ -101,8 +101,9 @@ body {
     flex: 1;
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    grid-template-rows:repeat(5,1fr);
+    grid-template-rows: repeat(5, 1fr);
     gap: 10px;
+    align-self: stretch;
 }
 
 /* SCIENTIFIC */
@@ -114,10 +115,14 @@ body {
     gap: 10px;
 }
 
+.calculator-body {
+    align-items: stretch;
+}
+
 /* BUTTON */
 
 button {
-    min-height:60px;
+    height: 100%;
     border: none;
     border-radius: 15px;
     font-size: 1rem;
@@ -135,8 +140,8 @@ button:hover {
     color: white;
 }
 
-.standard-mode .equal{
-    height:100%;
+.standard-mode .equal {
+    height: 100%;
 }
 
 /* HIDDEN */
