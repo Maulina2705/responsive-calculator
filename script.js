@@ -24,6 +24,7 @@ const radBtn = document.getElementById("radBtn");
 let angleMode = "DEG";
 let lastOperator = "";
 let lastNumber = "";
+let waitingForNewNumber = false;
 let justCalculated = false;
 
 /* =========================
@@ -230,13 +231,14 @@ numberButtons.forEach(button => {
 
     button.addEventListener("click", () => {
 
-        /* Reset setelah hasil */
+        /* Setelah hasil keluar */
 
-        if(justCalculated){
+        if(waitingForNewNumber){
 
             screen.textContent = "";
             expressionDisplay.textContent = "";
 
+            waitingForNewNumber = false;
             justCalculated = false;
 
         }
@@ -261,15 +263,26 @@ operatorButtons.forEach(button => {
 
     button.addEventListener("click", () => {
 
-        justCalculated = false;
-
         const operator = button.textContent;
 
         let expression = expressionDisplay.textContent;
 
+        /* Jika habis calculate */
+
+        if(justCalculated){
+
+            expression = screen.textContent;
+
+            expressionDisplay.textContent = expression;
+
+            justCalculated = false;
+        }
+
+        waitingForNewNumber = false;
+
         const lastChar = expression.slice(-1);
 
-        /* Jika operator terakhir sudah ada */
+        /* Replace operator */
 
         if(
             lastChar === "+" ||
@@ -281,20 +294,20 @@ operatorButtons.forEach(button => {
 
             expression = expression.slice(0, -1);
 
-            screen.textContent = screen.textContent.slice(0, -1);
+            screen.textContent =
+                screen.textContent.slice(0, -1);
 
         }
 
         expression += operator;
 
-        screen.textContent += operator;
-
         expressionDisplay.textContent = expression;
+
+        screen.textContent = expression;
 
     });
 
 });
-
 /* =========================
    CLEAR BUTTON
 ========================= */
@@ -363,6 +376,7 @@ function calculate(){
         addToHistory(expression, result);
 
         justCalculated = true;
+        waitingForNewNumber = true;
 
     }catch{
 
