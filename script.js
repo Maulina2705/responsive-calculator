@@ -1089,49 +1089,21 @@ scientificButtons.forEach(button => {
 
                 showingFraction = true;
 
-                const cleanValue =
-                    Number(lastAnswer.toFixed(10));
-
-                const fraction =
-                    decimalToFraction(cleanValue);
-
-                const parts =
-                    fraction.split("/");
-
-                if (parts.length !== 2) {
-
-                    screen.innerHTML = fraction;
-
-                    break;
-
-                }
-
                 screen.innerHTML = `
 
         <div class="fraction">
 
-            <span class="whole"></span>
+            <span class="top">
+                1
+            </span>
 
-            <div class="fraction-stack">
-
-                <span class="top">
-                    ${parts[0]}
-                </span>
-
-                <span class="bottom">
-                    ${parts[1]}
-                </span>
-
-            </div>
+            <span class="bottom">
+                2
+            </span>
 
         </div>
 
     `;
-
-                addToHistory(
-                    fraction,
-                    cleanValue
-                );
 
                 break;
 
