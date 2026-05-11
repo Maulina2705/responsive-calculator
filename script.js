@@ -84,16 +84,19 @@ document.addEventListener("keydown", (event) => {
 
     /* NUMBER */
 
-    if(
-        (key >= "0" && key <= "9") ||
-        key === "."
-    ){
+    if(/[0-9]/.test(key)){
+        screen.value += key;
+    }
+
+    /* DECIMAL */
+
+    else if(key === "."){
         screen.value += key;
     }
 
     /* OPERATOR */
 
-    if(
+    else if(
         key === "+" ||
         key === "-" ||
         key === "*" ||
@@ -105,7 +108,9 @@ document.addEventListener("keydown", (event) => {
 
     /* ENTER */
 
-    if(key === "Enter"){
+    else if(key === "Enter"){
+
+        event.preventDefault();
 
         try{
 
@@ -121,14 +126,20 @@ document.addEventListener("keydown", (event) => {
 
     /* BACKSPACE */
 
-    if(key === "Backspace"){
+    else if(key === "Backspace"){
+
+        event.preventDefault();
+
         screen.value = screen.value.slice(0, -1);
+
     }
 
-    /* ESC */
+    /* ESCAPE */
 
-    if(key === "Escape"){
+    else if(key === "Escape"){
+
         screen.value = "";
+
     }
 
 });
